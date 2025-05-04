@@ -7,13 +7,14 @@ import java.util.Date;
 import java.util.List;
 
 public class Database {
-    private static final String USERS_FILE = "users.csv";
-    private static final String ROOMS_FILE = "rooms.csv";
-    private static final String CATEGORIES_FILE = "categories.csv";
-    private static final String EVENTS_FILE = "events.csv";
+    private final String baseUrl ="C://Users//mahmo//IdeaProjects//oop_java_ui//";
+    private  final String USERS_FILE =baseUrl +  "csv_files//users.csv";
+    private  final String ROOMS_FILE =baseUrl + "csv_files//rooms.csv";
+    private  final String CATEGORIES_FILE =baseUrl + "csv_files//categories.csv";
+    private  final String EVENTS_FILE =baseUrl + "csv_files//events.csv";
 
     // Save Users to CSV
-    public static void saveUsers(List<User> users) {
+    public  void saveUsers(List<User> users) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(USERS_FILE))) {
             writer.println("id,name,age,username,password,birthday,userType,isActive,walletBalance");
             for (User user : users) {
@@ -34,7 +35,7 @@ public class Database {
     }
 
     // Read Users from CSV
-    public static List<User> readUsers() {
+    public  List<User> readUsers() {
         List<User> users = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(USERS_FILE))) {
             String line;
@@ -68,7 +69,7 @@ public class Database {
     }
 
     // Save Rooms to CSV
-    public static void saveRooms(List<Room> rooms) {
+    public  void saveRooms(List<Room> rooms) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(ROOMS_FILE))) {
             writer.println("id,name,capacity");
             for (Room room : rooms) {
@@ -83,7 +84,7 @@ public class Database {
     }
 
     // Read Rooms from CSV
-    public static List<Room> readRooms() {
+    public  List<Room> readRooms() {
         List<Room> rooms = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(ROOMS_FILE))) {
             String line;
@@ -102,7 +103,7 @@ public class Database {
     }
 
     // Save Categories to CSV
-    public static void saveCategories(List<Category> categories) {
+    public  void saveCategories(List<Category> categories) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(CATEGORIES_FILE))) {
             writer.println("id,name,description");
             for (Category category : categories) {
@@ -117,7 +118,7 @@ public class Database {
     }
 
     // Read Categories from CSV
-    public static List<Category> readCategories() {
+    public  List<Category> readCategories() {
         List<Category> categories = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(CATEGORIES_FILE))) {
             String line;
@@ -136,7 +137,7 @@ public class Database {
     }
 
     // Save Events to CSV
-    public static void saveEvents(List<Event> events) {
+    public  void saveEvents(List<Event> events) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(EVENTS_FILE))) {
             writer.println("eventId,eventName,eventDescription,startTime,endTime,ticketPrice,capacity,categoryId,roomId,organizerId");
             for (Event event : events) {
@@ -158,7 +159,7 @@ public class Database {
     }
 
     // Read Events from CSV
-    public static List<Event> readEvents(List<Category> categories, List<Room> rooms, List<User> users) {
+    public  List<Event> readEvents(List<Category> categories, List<Room> rooms, List<User> users) {
         List<Event> events = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(EVENTS_FILE))) {
             String line;
