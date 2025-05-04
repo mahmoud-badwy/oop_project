@@ -27,11 +27,15 @@ public class UserManager {
             }
         };
         users.add(newUser);
+        Database db = new Database();
+        db.saveUsers(users);
         return newUser;
     }
 
     // Login a user
     public User login(String userName, String password) {
+        Database db = new Database();
+        users = db.readUsers();
         for (User user : users) {
             if (user.getUserName().equals(userName) && user.authenticate(password)) {
                 return user;

@@ -47,7 +47,7 @@ public class Database {
                 int age = Integer.parseInt(parts[2]);
                 String username = parts[3];
                 String password = parts[4];
-                Date birthday = new Date(parts[5]);
+                Date birthday = new Date();
                 UserType userType = UserType.valueOf(parts[6]);
                 boolean isActive = Boolean.parseBoolean(parts[7]);
                 double walletBalance = Double.parseDouble(parts[8]);

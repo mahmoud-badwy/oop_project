@@ -1,0 +1,2 @@
+id,name,age,username,password,birthday,userType,isActive,walletBalance
+1,mahmoud,19,mahmoud,mahmoud,Thu May 08 00:00:00 EEST 2025,ATTENDEE,true,0.00

@@ -56,6 +56,13 @@ public class RegistrationScreen {
         nameField.setPromptText("Enter your name");
         nameField.setPrefWidth(250);
 
+        // Username field
+        Label usernameLabel = new Label("Username:");
+        usernameLabel.setStyle("-fx-font-weight: bold;");
+        usernameField = new TextField();
+        usernameField.setPromptText("Enter your username");
+        usernameField.setPrefWidth(250);
+
         // Age field
         Label ageLabel = new Label("Age:");
         ageLabel.setStyle("-fx-font-weight: bold;");
@@ -64,7 +71,7 @@ public class RegistrationScreen {
         ageField.setPrefWidth(250);
 
         // Birthday field
-        Label birthdayLabel = new Label("Birthday:");
+        Label birthdayLabel = new Label("Date of birth:");
         birthdayLabel.setStyle("-fx-font-weight: bold;");
         birthdayPicker = new DatePicker();
         birthdayPicker.setPrefWidth(250);
@@ -115,21 +122,23 @@ public class RegistrationScreen {
         // Add components to the form
         registrationForm.add(nameLabel, 0, 0);
         registrationForm.add(nameField, 0, 1);
-        registrationForm.add(ageLabel, 0, 2);
-        registrationForm.add(ageField, 0, 3);
-        registrationForm.add(birthdayLabel, 0, 4);
-        registrationForm.add(birthdayPicker, 0, 5);
-        registrationForm.add(emailLabel, 0, 6);
-        registrationForm.add(emailField, 0, 7);
-        registrationForm.add(passwordLabel, 0, 8);
-        registrationForm.add(passwordField, 0, 9);
-        registrationForm.add(confirmPasswordLabel, 0, 10);
-        registrationForm.add(confirmPasswordField, 0, 11);
-        registrationForm.add(userTypeLabel, 0, 12);
-        registrationForm.add(userTypeComboBox, 0, 13);
-        registrationForm.add(registerButton, 0, 14);
-        registrationForm.add(backToLoginLink, 0, 15);
-        registrationForm.add(messageLabel, 0, 16);
+        registrationForm.add(usernameLabel, 0, 2);
+        registrationForm.add(usernameField, 0, 3);
+        registrationForm.add(ageLabel, 0, 4);
+        registrationForm.add(ageField, 0, 5);
+        registrationForm.add(birthdayLabel, 0, 6);
+        registrationForm.add(birthdayPicker, 0, 7);
+        registrationForm.add(emailLabel, 0, 8);
+        registrationForm.add(emailField, 0, 9);
+        registrationForm.add(passwordLabel, 0, 10);
+        registrationForm.add(passwordField, 0, 11);
+        registrationForm.add(confirmPasswordLabel, 0, 12);
+        registrationForm.add(confirmPasswordField, 0, 13);
+        registrationForm.add(userTypeLabel, 0, 14);
+        registrationForm.add(userTypeComboBox, 0, 15);
+        registrationForm.add(registerButton, 0, 16);
+        registrationForm.add(backToLoginLink, 0, 17);
+        registrationForm.add(messageLabel, 0, 18);
 
         // Add components to main container
         mainContainer.getChildren().addAll(titleLabel, registrationForm);
@@ -178,6 +187,7 @@ public class RegistrationScreen {
         if (newUser != null) {
             messageLabel.setStyle("-fx-text-fill: #2ecc71;");
             messageLabel.setText("Registration successful! Please login.");
+            System.out.println("Registration successful!");
             // Automatically switch to login screen after successful registration
             showLoginScreen();
         } else {
