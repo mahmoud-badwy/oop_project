@@ -15,6 +15,7 @@ public class OrganizerDashboard {
     private Stage stage;
     private Organizer organizer;
 
+
     public OrganizerDashboard(Stage stage, Organizer organizer) {
         this.stage = stage;
         this.organizer = organizer;
@@ -112,11 +113,11 @@ public class OrganizerDashboard {
     }
     private void viewevents() {
         System.out.println("view my events clicked");
-        // Create a new Stage for the "View Events" screen
+
         Stage stage = new Stage();
         stage.setTitle("View Events");
 
-        // Create a ListView to display the list of events
+
         ListView<Event> eventListView = new ListView<>();
 
 
@@ -151,6 +152,8 @@ public class OrganizerDashboard {
 
     private void showUpdateEventForm() {
         System.out.println("Update Event clicked");
+        Stage stage = new Stage();
+        new UpdateEventScreen(stage,this.organizer);
 
 
     }
@@ -163,16 +166,24 @@ public class OrganizerDashboard {
 
     private void showBookRoomForm() {
         System.out.println("Book Room clicked");
-        // Future: Pick event, check availability, call bookroom
+        Stage stage = new Stage();
+        new BookRoomScreen(stage,this.organizer);
+
     }
 
     private void showAttendeeListForm() {
         System.out.println("View Attendees clicked");
+        Stage stage = new Stage();
+        new ViewEventAttendeesScreen(stage,this.organizer);
+
+
 
     }
 
     private void logout() {
         System.out.println("Logging out...");
+        organizer.setActive(false);
+        stage.close();
 
     }
 

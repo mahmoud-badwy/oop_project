@@ -13,11 +13,11 @@ public class Main extends Application {
 
         Organizer org = new Organizer(2,"omar",19,"omar","omar",null,UserType.ORGANIZER);
         
-//        LoginScreen loginScreen = new LoginScreen(primaryStage, userManager);
-//        loginScreen.show();
+        LoginScreen loginScreen = new LoginScreen(primaryStage, userManager);
+        loginScreen.show();
 
-        OrganizerDashboard ord = new OrganizerDashboard(primaryStage, org);
-        ord.show();
+//        OrganizerDashboard ord = new OrganizerDashboard(primaryStage, org);
+//        ord.show();
    }
 
     public static void main(String[] args) {

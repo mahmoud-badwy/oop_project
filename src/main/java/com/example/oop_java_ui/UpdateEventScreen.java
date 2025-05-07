@@ -3,25 +3,33 @@ package com.example.oop_java_ui;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.time.LocalTime;
 import java.util.List;
 
-public class EventCreationDashboard {
+public class UpdateEventScreen {
     private Organizer organizer;
     private CategoryManager catmanager;
 
-    public EventCreationDashboard(Stage stage, Organizer organizer) {
+    public UpdateEventScreen(Stage stage, Organizer organizer) {
         this.organizer = organizer;
 
-        Label titleLabel = new Label("Create New Event");
+        Label titleLabel = new Label("Update Event");
         titleLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
+
+        Label idLabel = new Label("ID of Event to be Updated:");
+        idLabel.setStyle("-fx-font-weight: bold;");
 
         TextField eventIdField = new TextField();
         eventIdField.setPromptText("Event ID");
+
+        Label updateLabel = new Label("Enter New Event data:");
+        updateLabel.setStyle("-fx-font-weight: bold;");
 
         TextField nameField = new TextField();
         nameField.setPromptText("Event Name");
@@ -38,13 +46,11 @@ public class EventCreationDashboard {
         TextField ticketPriceField = new TextField();
         ticketPriceField.setPromptText("Ticket Price");
 
-        TextField capacityField = new TextField();
-        capacityField.setPromptText("Capacity");
 
         TextField categoryField = new TextField();
         categoryField.setPromptText("Category");
 
-        Button createButton = new Button("Create Event");
+        Button createButton = new Button("Update Event");
 
         Label feedbackLabel = new Label();
 
@@ -56,16 +62,18 @@ public class EventCreationDashboard {
                 LocalTime start = LocalTime.parse(startTimeField.getText());
                 LocalTime end = LocalTime.parse(endTimeField.getText());
                 double price = Double.parseDouble(ticketPriceField.getText());
-                int cap = Integer.parseInt(capacityField.getText());
+
                 String catName = categoryField.getText();
 
                 List<Category> holder = catmanager.searchCategoriesByName(catName);
                 Category category = holder.get(0);
 
-                Event event = new Event(eventId, name, desc, start, end, price, cap, category, organizer);
-                organizer.createEvent(event);
+                Event event = organizer.getEventById(eventId);
+                event.updateEvent(name,desc,start,end,price,category);
 
-                feedbackLabel.setText("Event created successfully!");
+
+
+                feedbackLabel.setText("Event updated successfully!");
             } catch (Exception ex) {
                 feedbackLabel.setText("Error: " + ex.getMessage());
                 feedbackLabel.setStyle("-fx-text-fill: red;");
@@ -74,9 +82,12 @@ public class EventCreationDashboard {
 
         VBox form = new VBox(10,
                 titleLabel,
-                eventIdField, nameField, descriptionField,
+                idLabel,
+                eventIdField,
+                updateLabel,
+                nameField, descriptionField,
                 startTimeField, endTimeField,
-                ticketPriceField, capacityField,
+                ticketPriceField,
                 categoryField,
                 createButton, feedbackLabel
         );
@@ -85,7 +96,8 @@ public class EventCreationDashboard {
 
         Scene scene = new Scene(form, 400, 600);
         stage.setScene(scene);
-        stage.setTitle("Event Creation");
+        stage.setTitle("Update Event");
         stage.show();
     }
+
 }
