@@ -25,7 +25,7 @@ public class Organizer extends User {
         events.add(event);
     }
 
-    // READ
+
     public List<Event> getMyEvents() {
         return getEvents();
     }

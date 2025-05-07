@@ -15,7 +15,7 @@ public class Event {
     private Room room;
     private Organizer organizer;
     private ArrayList<Attendee> attendees;
-    private int noofattendees = attendees.size();
+    private int noofattendees = 0;
 
     public int getNoofattendees() {
         return noofattendees;
@@ -37,6 +37,7 @@ public class Event {
         this.room = null;
         this.organizer = organizer;
         this.attendees = new ArrayList<>();
+        this.noofattendees = attendees.size();
     }
 
     //room.bookRoom(this);
