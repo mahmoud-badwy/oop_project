@@ -159,7 +159,7 @@ public class Database {
     }
 
     // Read Events from CSV
-    public  List<Event> readEvents(List<Category> categories, List<Room> rooms, List<User> users) {
+    public  List<Event> readEvents() {
         List<Event> events = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(EVENTS_FILE))) {
             String line;
@@ -177,26 +177,13 @@ public class Database {
                 int roomId = Integer.parseInt(parts[8]);
                 int organizerId = Integer.parseInt(parts[9]);
 
-                // Find related objects
-                Category category = categories.stream()
-                    .filter(c -> c.getId() == categoryId)
-                    .findFirst()
-                    .orElse(null);
-                
-                Room room = rooms.stream()
-                    .filter(r -> r.getId() == roomId)
-                    .findFirst()
-                    .orElse(null);
-                
-                User organizer = users.stream()
-                    .filter(u -> u.getId() == organizerId)
-                    .findFirst()
-                    .orElse(null);
+                // Create new objects directly without filtering
+                Category category = new Category(categoryId, "", "");
+                Room room = new Room(roomId, "", 0);
+                Organizer organizer = new Organizer(organizerId, "", 0, "", "", new Date(), UserType.ORGANIZER);
 
-                if (category != null && room != null && organizer != null && organizer instanceof Organizer) {
-                    events.add(new Event(eventId, eventName, eventDescription, startTime, endTime,
-                        ticketPrice, capacity, category, (Organizer) organizer));
-                }
+                events.add(new Event(eventId, eventName, eventDescription, startTime, endTime,
+                    ticketPrice, capacity, category, organizer));
             }
         } catch (IOException e) {
             e.printStackTrace();
