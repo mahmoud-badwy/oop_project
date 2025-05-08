@@ -1,6 +1,5 @@
-package com.example.oop_java_ui;
-
 import java.util.Date;
+import java.util.List;
 
 public class Admin extends User {
     private String role;
@@ -59,6 +58,10 @@ public class Admin extends User {
     }
     public void showattendes(Event e )   {
         System.out.println(e.getAttendees());
+    }
+
+    List<Event> getAllEvents() {
+        return getAllEvents();
     }
  
 }
