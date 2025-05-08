@@ -55,6 +55,5 @@ public class Attendee extends User {
             }
         }
 
-        void chooseEvent(){}
     }
     
