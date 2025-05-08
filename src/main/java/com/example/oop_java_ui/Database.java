@@ -52,12 +52,12 @@ public class Database {
                 boolean isActive = Boolean.parseBoolean(parts[7]);
                 double walletBalance = Double.parseDouble(parts[8]);
 
-                User user = new User(id, name, age, username, password, birthday, userType) {
-                    @Override
-                    public String toString() {
-                        return "";
-                    }
-                };
+                User user;
+                if (userType == UserType.ORGANIZER) {
+                    user = new Organizer(id, name, age, username, password, birthday, userType);
+                } else {
+                    user = new Attendee(id, name, age, username, password, birthday, Gender.MALE, "", walletBalance);
+                }
                 user.setActive(isActive);
                 user.getWallet().setBalance(walletBalance);
                 users.add(user);
