@@ -99,7 +99,12 @@ public class LoginScreen {
 
         User user = userManager.login(username, password);
         if (user != null) {
-            // TODO: Show appropriate dashboard based on user type
+            switch (user.getUserType()) {
+                case ORGANIZER:
+                    Organizer organizer = (Organizer) user;
+                    OrganizerDashboard ord = new OrganizerDashboard( stage,organizer);
+                    ord.show();
+            }
             System.out.println("Login successful for user: " + username);
         } else {
             messageLabel.setText("Invalid username or password");

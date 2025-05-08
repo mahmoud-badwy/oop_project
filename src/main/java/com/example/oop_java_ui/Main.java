@@ -16,8 +16,7 @@ public class Main extends Application {
         LoginScreen loginScreen = new LoginScreen(primaryStage, userManager);
         loginScreen.show();
 
-//        OrganizerDashboard ord = new OrganizerDashboard(primaryStage, org);
-//        ord.show();
+
    }
 
     public static void main(String[] args) {
