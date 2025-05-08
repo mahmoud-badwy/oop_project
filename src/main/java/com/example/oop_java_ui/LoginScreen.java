@@ -98,12 +98,20 @@ public class LoginScreen {
         }
 
         User user = userManager.login(username, password);
+        if(user instanceof  User) System.out.println();
         if (user != null) {
             switch (user.getUserType()) {
                 case ORGANIZER:
                     Organizer organizer = (Organizer) user;
                     OrganizerDashboard ord = new OrganizerDashboard( stage,organizer);
                     ord.show();
+                    break;
+
+                case ATTENDEE:
+                    Attendee attendee = (Attendee) user;
+                    AttendeeDashboard attendeeDashboard = new AttendeeDashboard(stage, attendee);
+                    attendeeDashboard.show();
+                    break;
             }
             System.out.println("Login successful for user: " + username);
         } else {

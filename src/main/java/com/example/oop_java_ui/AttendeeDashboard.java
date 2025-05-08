@@ -17,14 +17,15 @@ public class AttendeeDashboard {
     private Stage stage;
     private Database database;
 
-    public AttendeeDashboard(Attendee attendee) {
+
+    public AttendeeDashboard(Stage stage, Attendee attendee) {
         this.currentAttendee = attendee;
         this.database = new Database();
+        this.stage = stage;
         createDashboard();
     }
 
     private void createDashboard() {
-        stage = new Stage();
         stage.setTitle("Attendee Dashboard");
 
         // Create main layout
