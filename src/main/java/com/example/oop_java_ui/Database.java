@@ -323,18 +323,23 @@ public class Database {
     // Update specific event
     public boolean updateEvent(Event updatedEvent) {
         if (updatedEvent == null) {
+            System.out.println("updateEvent: updatedEvent is null");
             return false;
         }
-        
         try {
             List<Event> events = readEvents();
             if (events.isEmpty()) {
+                System.out.println("updateEvent: events list is empty after reading CSV");
                 return false;
             }
 
             boolean found = false;
             for (int i = 0; i < events.size(); i++) {
+                System.out.println("updateEvent: checking event with ID " + events.get(i).getEventId());
                 if (events.get(i).getEventId() == updatedEvent.getEventId()) {
+                    System.out.println("updateEvent: found event with ID " + updatedEvent.getEventId());
+                    System.out.println("updateEvent: old event data: " + events.get(i));
+                    System.out.println("updateEvent: new event data: " + updatedEvent);
                     events.set(i, updatedEvent);
                     found = true;
                     break;
@@ -343,8 +348,23 @@ public class Database {
 
             if (found) {
                 saveEvents(events);
+                System.out.println("updateEvent: event updated and saved");
+            }
+            // Print CSV content after saving (guaranteed after file is closed)
+            if (found) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(EVENTS_FILE))) {
+                    System.out.println("updateEvent: CSV content after update:");
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        System.out.println(line);
+                    }
+                } catch (Exception e) {
+                    System.out.println("updateEvent: error reading CSV after update");
+                    e.printStackTrace();
+                }
                 return true;
             }
+            System.out.println("updateEvent: event with ID " + updatedEvent.getEventId() + " not found");
             return false;
         } catch (Exception e) {
             e.printStackTrace();
