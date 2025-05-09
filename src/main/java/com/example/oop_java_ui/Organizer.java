@@ -43,8 +43,20 @@ public void createEvent(Event event) {
     return null; 
 }
     public List<Event> getMyEvents() {
+        Database db = new Database();
 
-        return getEvents();
+        List<Event> events = db.readEvents();
+        List<Event> results = new ArrayList<>();
+
+        for (Event e : events) {
+            if (e.getOrganizer().getId()==(this.getId())) {
+                results.add(e);
+            }
+        }
+
+
+
+        return results;
     }
 
 
@@ -74,16 +86,32 @@ public void createEvent(Event event) {
     }
 
     public boolean bookroom(Event event, RoomManager roommanager, Admin admin) {
+        Database db = new Database();
         List<Room> roomcheck = roommanager.getAvailableRooms(event.getStartTime(), event.getEndTime(), event.getCapacity());
         long hours = Duration.between(event.getStartTime(), event.getEndTime()).toHours();
         long price = hours * 10;
-        if (!roomcheck.isEmpty()) {
-            roommanager.occupyroom(roomcheck.get(0));
-            Organizer.super.getWallet().transfer(price, admin.getWallet());
-            event.setRoom(roomcheck.get(0));
-            return true;
 
-        } else return false;
+        if (!roomcheck.isEmpty()) {
+            Room selectedRoom = roomcheck.get(0);
+            roommanager.occupyroom(selectedRoom);
+
+            // Transfer money
+            Organizer.super.getWallet().transfer(price, admin.getWallet());
+
+            // Set room to event
+            event.setRoom(selectedRoom);
+
+            // Save changes
+            db.updateEvent(event);
+            db.updateRoom(selectedRoom);
+            db.updateUser(admin);
+            db.updateUser(this);
+
+            return true;
+        } else {
+            System.out.println("No rooms available for the given time and capacity.");
+            return false;
+        }
     }
 
     RoomManager m = new RoomManager ();

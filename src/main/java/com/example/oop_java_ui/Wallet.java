@@ -28,6 +28,7 @@ public class Wallet {
 
 
     public boolean withdraw(double amount) {
+
         if (balance >= amount) {
             balance -= amount; // Deduct from balance if sufficient funds
             return true;
@@ -37,6 +38,9 @@ public class Wallet {
 
 
     public void transfer(double amount, Wallet recipient) {
+
+
+
         if (this.withdraw(amount)) {
             recipient.deposit(amount);
             System.out.println("Transfer successful! " + amount + " has been transferred.");
