@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Database {
-    private final String baseUrl ="C://Users//gerge//Downloads//New folder//oop_project//";
+    private final String baseUrl ="C://Users//mahmo//IdeaProjects//oop_java_ui//";
     private  final String USERS_FILE =baseUrl +  "csv_files//users.csv";
     private  final String ROOMS_FILE =baseUrl + "csv_files//rooms.csv";
     private  final String CATEGORIES_FILE =baseUrl + "csv_files//categories.csv";
@@ -53,10 +53,18 @@ public class Database {
                 double walletBalance = Double.parseDouble(parts[8]);
 
                 User user;
-                if (userType == UserType.ORGANIZER) {
-                    user = new Organizer(id, name, age, username, password, birthday, userType);
-                } else {
-                    user = new Attendee(id, name, age, username, password, birthday, Gender.MALE, "", walletBalance);
+                switch (userType) {
+                    case ORGANIZER:
+                        user = new Organizer(id, name, age, username, password, birthday, userType);
+                        break;
+                    case ADMIN:
+                        user = new Admin("Administrator", 40.0f, 1, id, name, age, username, password, birthday, userType, new RoomManager());
+                        break;
+                    case ATTENDEE:
+                        user = new Attendee(id, name, age, username, password, birthday, Gender.MALE, "", walletBalance);
+                        break;
+                    default:
+                        throw new IllegalStateException("Unexpected user type: " + userType);
                 }
                 user.setActive(isActive);
                 user.getWallet().setBalance(walletBalance);

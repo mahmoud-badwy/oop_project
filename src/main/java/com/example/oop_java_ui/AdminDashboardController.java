@@ -1,4 +1,4 @@
-package firstfxjava;
+package com.example.oop_java_ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -42,9 +42,6 @@ public class AdminDashboardController {
         
         // Initialize managers
         roomManager = new RoomManager();
-        database = new Database();
-        admin = new Admin("Admin", 40.0f, 1, 1, "Admin", 30, "admin", "admin", 
-                         new java.util.Date(), UserType.ADMIN, roomManager);
     }
     
     @FXML

@@ -1,9 +1,5 @@
-package firstfxjava;
+package com.example.oop_java_ui;
 
-/**
- *
- * @author PC
- */
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Platform;
@@ -12,12 +8,12 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
+
 public class AdminDashboard {
     private Admin admin;
     private VBox mainLayout;
@@ -38,12 +34,9 @@ public class AdminDashboard {
     private static final String TEXT_COLOR = "#2c3e50";       // Dark blue for text
     private VBox operationArea;  // Changed from Object to VBox
 
-    public AdminDashboard(Admin admin) {
+    public AdminDashboard(Stage stage, Admin admin) {
         this.admin = admin;
-        Platform.runLater(() -> {
-            stage = new Stage();
-            createUI();
-        });
+        this.stage = stage;
     }
 
     private void createUI() {
@@ -138,7 +131,8 @@ public class AdminDashboard {
         
         viewRoomsBtn.setOnAction(e -> {
             displayArea.clear();
-            List<Room> rooms = admin.A.getAllRooms();
+            Database db = new Database();
+            List<Room> rooms = db.readRooms();
             if (rooms != null && !rooms.isEmpty()) {
                 StringBuilder roomText = new StringBuilder();
                 roomText.append("Available Rooms:\n\n");
@@ -222,7 +216,7 @@ public class AdminDashboard {
                 String name = roomNameField.getText();
                 int capacity = Integer.parseInt(roomCapacityField.getText());
                 
-                admin.A.createRoom(name, id);
+                admin.roomManager.createRoom(name, id);
                 
                 displayArea.setText("Room created successfully!");
                 roomIdField.clear();
@@ -278,7 +272,7 @@ public class AdminDashboard {
                 String name = updateRoomNameField.getText();
                 int capacity = Integer.parseInt(updateRoomCapacityField.getText());
                 
-                admin.A.updateRoom(id, name, capacity);
+                admin.roomManager.updateRoom(id, name, capacity);
                 
                 displayArea.setText("Room updated successfully!");
                 updateRoomIdField.clear();
@@ -323,7 +317,7 @@ public class AdminDashboard {
         deleteRoomSubmitBtn.setOnAction(e -> {
             try {
                 int id = Integer.parseInt(deleteRoomIdField.getText());
-                admin.A.deleteRoom(id);
+                admin.roomManager.deleteRoom(id);
                 
                 displayArea.setText("Room deleted successfully!");
                 deleteRoomIdField.clear();
@@ -365,7 +359,7 @@ public class AdminDashboard {
             String searchTerm = searchRoomField.getText();
             try {
                 int id = Integer.parseInt(searchTerm);
-                Room room = admin.A.getRoomById(id);
+                Room room = admin.roomManager.getRoomById(id);
                 if (room != null) {
                     displayArea.setText("Room found:\n" +
                         "ID: " + room.getId() + "\n" +
@@ -375,7 +369,7 @@ public class AdminDashboard {
                     displayArea.setText("Room not found.");
                 }
             } catch (NumberFormatException ex) {
-                admin.A.searchRoomsByName(searchTerm);
+                admin.roomManager.searchRoomsByName(searchTerm);
             }
             searchRoomField.clear();
             operationArea.setVisible(false);
@@ -553,7 +547,7 @@ public class AdminDashboard {
         Platform.runLater(() -> {
             displayArea.clear();
             // Get all rooms and display them in the text area
-            List<Room> rooms = admin.A.getAllRooms();
+            List<Room> rooms = admin.roomManager.getAllRooms();
             if (rooms != null && !rooms.isEmpty()) {
                 StringBuilder roomText = new StringBuilder();
                 roomText.append(" Rooms:\n\n");
@@ -601,7 +595,8 @@ public class AdminDashboard {
         });
     }
 
-    public void showDashboard() {
+    public void show() {
+        createUI();
         Platform.runLater(() -> stage.show());
     }
 } 

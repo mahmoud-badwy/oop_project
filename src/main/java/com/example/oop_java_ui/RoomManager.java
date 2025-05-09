@@ -18,6 +18,8 @@ public class RoomManager {
     public Room createRoom(String name, int capacity) {
         Room room = new Room(nextId++, name, capacity);
         rooms.add(room);
+        Database db = new Database();
+        db.saveRooms(rooms);
         return room;
     }
 

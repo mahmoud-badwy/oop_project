@@ -8,15 +8,10 @@ import java.util.Date;
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
-        Database database = new Database();
         UserManager userManager = new UserManager();
 
-        Organizer org = new Organizer(2,"omar",19,"omar","omar",null,UserType.ORGANIZER);
-        
         LoginScreen loginScreen = new LoginScreen(primaryStage, userManager);
         loginScreen.show();
-
-
    }
 
     public static void main(String[] args) {

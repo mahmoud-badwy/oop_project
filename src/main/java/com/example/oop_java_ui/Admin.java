@@ -1,3 +1,5 @@
+package com.example.oop_java_ui;
+
 import java.util.Date;
 import java.util.List;
 
@@ -5,15 +7,15 @@ public class Admin extends User {
     private String role  ;
     private float working_hours ;
     private int nextId ;
-    RoomManager A = new RoomManager();
-    Database b = new Database() ;
+    RoomManager roomManager = new RoomManager();
+    Database db = new Database() ;
 
    
     public Admin(String role, float working_hours, int nextId, int id, String name, int age, String userName, String password, Date birthday, UserType userType , RoomManager m ) {
     super(id, name, age, userName, password, birthday, userType);
     this.role = role;
     this.working_hours = working_hours;
-    A = m ;
+    roomManager = m ;
     }
 
     
@@ -45,12 +47,12 @@ public class Admin extends User {
         this.nextId = nextId;
     }
 
-   public void getAllrooms(){System.out.println(b.readRooms());}
-  public void Createroom(String name, int capacity){System.out.println(A.createRoom(name,capacity));}
-  public void getroombyID(int id){System.out.println(A.getRoomById(id));}
-  public void updateRoom(int id, String name, int capacity) {System.out.println(A.updateRoom(id, name, capacity));}
-  public void deleteRoom(int id){System.out.println(A.deleteRoom(id));}
-  public void searchRoomsByName(String name){System.out.println(A.searchRoomsByName(name));}
+   public void getAllrooms(){System.out.println(db.readRooms());}
+  public void Createroom(String name, int capacity){System.out.println(roomManager.createRoom(name,capacity));}
+  public void getroombyID(int id){System.out.println(roomManager.getRoomById(id));}
+  public void updateRoom(int id, String name, int capacity) {System.out.println(roomManager.updateRoom(id, name, capacity));}
+  public void deleteRoom(int id){System.out.println(roomManager.deleteRoom(id));}
+  public void searchRoomsByName(String name){System.out.println(roomManager.searchRoomsByName(name));}
   
    
 
@@ -62,7 +64,7 @@ public class Admin extends User {
     }
 
     List<Event> getAllEvents() {
-        return b.readEvents();
+        return db.readEvents();
     }
  
 }

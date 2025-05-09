@@ -98,12 +98,11 @@ public class LoginScreen {
         }
 
         User user = userManager.login(username, password);
-        if(user instanceof  User) System.out.println();
         if (user != null) {
             switch (user.getUserType()) {
                 case ORGANIZER:
                     Organizer organizer = (Organizer) user;
-                    OrganizerDashboard ord = new OrganizerDashboard( stage,organizer);
+                    OrganizerDashboard ord = new OrganizerDashboard(stage, organizer);
                     ord.show();
                     break;
 
@@ -112,8 +111,14 @@ public class LoginScreen {
                     AttendeeDashboard attendeeDashboard = new AttendeeDashboard(stage, attendee);
                     attendeeDashboard.show();
                     break;
+
+                case ADMIN:
+                    Admin admin = (Admin) user;
+                    AdminDashboard adminDashboard = new AdminDashboard(stage, admin);
+                    adminDashboard.show();
+                    break;
             }
-            System.out.println("Login successful for user: " + username);
+            System.out.println("Login successful for user: " + user.getUserType());
         } else {
             messageLabel.setText("Invalid username or password");
         }

@@ -38,9 +38,12 @@ public class UserManager {
         users = db.readUsers();
         for (User user : users) {
             if (user.getUserName().equals(userName) && user.authenticate(password)) {
+                users .clear();
                 return user;
             }
         }
+        users .clear();
+
         return null;
     }
 
