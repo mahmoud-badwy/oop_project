@@ -46,6 +46,9 @@ public class UpdateEventScreen {
         TextField ticketPriceField = new TextField();
         ticketPriceField.setPromptText("Ticket Price");
 
+        TextField capacityField = new TextField();
+        capacityField.setPromptText("Capacity");
+
         Label success = new Label();
 
 
@@ -64,20 +67,22 @@ public class UpdateEventScreen {
                 LocalTime start = LocalTime.parse(startTimeField.getText());
                 LocalTime end = LocalTime.parse(endTimeField.getText());
                 double price = Double.parseDouble(ticketPriceField.getText());
+                int capacity = Integer.parseInt(capacityField.getText());
+
 
                 String catName = categoryField.getText();
 
                 List<Category> holder = catmanager.searchCategoriesByName(catName);
                 Category category = holder.get(0);
 
-                Event event = organizer.getEventById(eventId);
+                Event event = new Event(eventId,name,desc,start,end,price,capacity,category,organizer);
                 Database db = new Database();
                 db.updateEvent(event);
 
 
 
-                System.out.println("Event Deleted");
-                success.setText("Event Deleted");
+                System.out.println("Event Updated");
+                success.setText("Event Updated");
 
             } catch (Exception ex) {
                 feedbackLabel.setText("Error: " + ex.getMessage());
@@ -93,6 +98,7 @@ public class UpdateEventScreen {
                 nameField, descriptionField,
                 startTimeField, endTimeField,
                 ticketPriceField,
+                capacityField,
                 categoryField,
                 createButton, feedbackLabel , success
         );
