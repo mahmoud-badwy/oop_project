@@ -18,6 +18,8 @@ public class DeleteEventScreen {
 
         Label feedback = new Label();
         feedback.setStyle("-fx-text-fill: red;");
+        Label success = new Label();
+
 
         Button deleteBtn = new Button("Delete Event");
         deleteBtn.setOnAction(e -> {
@@ -29,9 +31,12 @@ public class DeleteEventScreen {
                             int ID = Integer.parseInt(idInput.getText());
 
                             loggedInOrganizer.deleteEvent(ID);
+                            System.out.println("Event Deleted");
+                            success.setText("Event Deleted");
 
                         } catch (NumberFormatException ex) {
                             System.out.println("Please enter a valid number for the Event ID.");
+                            feedback.setText("Please enter a valid number for the Event ID.");
                         }
                     }
                 });
