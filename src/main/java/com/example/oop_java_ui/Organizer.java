@@ -43,6 +43,7 @@ public void createEvent(Event event) {
     return null; 
 }
     public List<Event> getMyEvents() {
+
         return getEvents();
     }
 
@@ -60,9 +61,9 @@ public void createEvent(Event event) {
     }
 
     // DELETE
-    public boolean deleteEvent(int eventId) {
+    public void deleteEvent(int eventId) {
         Database db = new Database();
-        return events.removeIf(e -> e.getEventId() == eventId);
+        db.deleteEvent(eventId);
     }
 
     // Show all events

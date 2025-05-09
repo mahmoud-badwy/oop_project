@@ -41,7 +41,7 @@ public class DeleteEventScreen {
                     }
                 });
 
-        VBox layout = new VBox(10, instruction, idInput, deleteBtn, feedback);
+        VBox layout = new VBox(10, instruction, idInput, deleteBtn, feedback, success);
         layout.setPadding(new Insets(20));
         stage.setScene(new Scene(layout, 300, 200));
         stage.setTitle("Delete Event");
