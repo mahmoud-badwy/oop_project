@@ -1,1 +1,3 @@
 id,name,age,username,password,birthday,userType,isActive,walletBalance
+1,mahmoud,19,mahmoud,mahmoud,Fri May 02 00:00:00 EEST 2025,ORGANIZER,true,0.00
+id,name,age,username,password,birthday,userType,isActive,walletBalance

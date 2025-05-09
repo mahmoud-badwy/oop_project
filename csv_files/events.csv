@@ -1,2 +1,2 @@
-eventId,eventName,eventDescription,startTime,endTime,ticketPrice,capacity,categoryId,roomId,organizerId
-1,name,des,20:20,21:21,100.00,1,2,-1,1
+eventId,eventName,eventDescription,startTime,endTime,ticketPrice,capacity,categoryId,roomId,organizerId,attendeeIds
+4,rt,rt,01:05,01:05,12.00,12,2,-1,1,
