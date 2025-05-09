@@ -258,4 +258,30 @@ public class Database {
         }
         return false;
     }
+
+    // Delete room by ID
+    public boolean deleteRoom(int roomId) {
+        List<Room> rooms = readRooms();
+        for (int i = 0; i < rooms.size(); i++) {
+            if (rooms.get(i).getId() == roomId) {
+                rooms.remove(i);
+                saveRooms(rooms);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Delete event by ID
+    public boolean deleteEvent(int eventId) {
+        List<Event> events = readEvents();
+        for (int i = 0; i < events.size(); i++) {
+            if (events.get(i).getEventId() == eventId) {
+                events.remove(i);
+                saveEvents(events);
+                return true;
+            }
+        }
+        return false;
+    }
 }
