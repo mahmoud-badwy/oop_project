@@ -145,10 +145,14 @@ public class Database {
     }
 
     // Save Events to CSV
-    public  void saveEvents(List<Event> events) {
+    public void saveEvents(List<Event> events) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(EVENTS_FILE))) {
             writer.println("eventId,eventName,eventDescription,startTime,endTime,ticketPrice,capacity,categoryId,roomId,organizerId");
             for (Event event : events) {
+                int roomId = event.getRoom() != null ? event.getRoom().getId() : -1;
+                int categoryId = event.getCategory() != null ? event.getCategory().getId() : -1;
+                int organizerId = event.getOrganizer() != null ? event.getOrganizer().getId() : -1;
+                
                 writer.println(String.format("%d,%s,%s,%s,%s,%.2f,%d,%d,%d,%d",
                     event.getEventId(),
                     event.getEventName(),
@@ -157,9 +161,9 @@ public class Database {
                     event.getEndTime(),
                     event.getTicketPrice(),
                     event.getCapacity(),
-                    event.getCategory().getId(),
-                    event.getRoom().getId(),
-                    event.getOrganizer().getId()));
+                    categoryId,
+                    roomId,
+                    organizerId));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -167,7 +171,7 @@ public class Database {
     }
 
     // Read Events from CSV
-    public  List<Event> readEvents() {
+    public List<Event> readEvents() {
         List<Event> events = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(EVENTS_FILE))) {
             String line;
@@ -185,13 +189,17 @@ public class Database {
                 int roomId = Integer.parseInt(parts[8]);
                 int organizerId = Integer.parseInt(parts[9]);
 
-                // Create new objects directly without filtering
-                Category category = new Category(categoryId, "", "");
-                Room room = new Room(roomId, "", 0);
-                Organizer organizer = new Organizer(organizerId, "", 0, "", "", new Date(), UserType.ORGANIZER);
+                // Create objects with proper null handling
+                Category category = categoryId != -1 ? new Category(categoryId, "", "") : null;
+                Room room = roomId != -1 ? new Room(roomId, "", 0) : null;
+                Organizer organizer = organizerId != -1 ? new Organizer(organizerId, "", 0, "", "", new Date(), UserType.ORGANIZER) : null;
 
-                events.add(new Event(eventId, eventName, eventDescription, startTime, endTime,
-                    ticketPrice, capacity, category, organizer));
+                Event event = new Event(eventId, eventName, eventDescription, startTime, endTime,
+                    ticketPrice, capacity, category, organizer);
+                if (room != null) {
+                    event.setRoom(room);
+                }
+                events.add(event);
             }
         } catch (IOException e) {
             e.printStackTrace();
