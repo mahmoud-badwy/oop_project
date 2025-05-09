@@ -10,27 +10,17 @@ public class Attendee extends User {
     public Attendee(){
         updateUserType();
     }
-    public Attendee(int id, String name, int age, String userName, String password, Date birthday,Gender gender, String address,double balance) {
-        super(id,name,age,userName,password,birthday,UserType.ATTENDEE);
+    public Attendee(int id, String name, int age, String userName, String password, Date birthday, Gender gender, String address, double balance) {
+        super(id, name, age, userName, password, birthday, UserType.ATTENDEE);
         this.gender = gender;
         this.address = address;
+        this.events = new ArrayList<>();
         getWallet().setBalance(balance);
     }
-    void buyticket(Event event){
-        if (event.getNoofattendees() < event.getCapacity()){
-            Attendee.super.getWallet().transfer(event.getTicketPrice(), event.getOrganizer().getWallet());
-            event.addAttendee(Attendee.this);
-            events.add(event);
-            System.out.println("Ticket bought successfully");
-        }
-        else System.out.println("Event is full");
 
-
-
-
+    public boolean isRegisteredForEvent(Event event) {
+        return events.contains(event);
     }
-
-
 
     public Gender getGender() {
         return gender;
