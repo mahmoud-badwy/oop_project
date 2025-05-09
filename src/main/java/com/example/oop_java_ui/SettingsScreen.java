@@ -16,6 +16,7 @@ public class SettingsScreen {
     private User currentUser;
     private UserManager userManager;
     private TextField nameField;
+    private TextField usernameField;
     private TextField ageField;
     private TextField birthdayField;
     private PasswordField currentPasswordField;
@@ -73,6 +74,7 @@ public class SettingsScreen {
         panel.setAlignment(Pos.CENTER);
         
         nameField = new TextField(currentUser.getName());
+        usernameField = new TextField(currentUser.getUserName());
         ageField = new TextField(String.valueOf(currentUser.getAge()));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         birthdayField = new TextField(sdf.format(currentUser.getBirthday()));
@@ -84,10 +86,12 @@ public class SettingsScreen {
         
         grid.add(new Label("Name:"), 0, 0);
         grid.add(nameField, 1, 0);
-        grid.add(new Label("Age:"), 0, 1);
-        grid.add(ageField, 1, 1);
-        grid.add(new Label("Birthday (yyyy-MM-dd):"), 0, 2);
-        grid.add(birthdayField, 1, 2);
+        grid.add(new Label("Username:"), 0, 1);
+        grid.add(usernameField, 1, 1);
+        grid.add(new Label("Age:"), 0, 2);
+        grid.add(ageField, 1, 2);
+        grid.add(new Label("Birthday (yyyy-MM-dd):"), 0, 3);
+        grid.add(birthdayField, 1, 3);
         
         Button updateButton = new Button("Update Profile");
         updateButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;");
@@ -137,19 +141,25 @@ public class SettingsScreen {
         Button toggleButton = new Button(currentUser.isActive() ? "Deactivate Account" : "Reactivate Account");
         toggleButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;");
         toggleButton.setOnAction(e -> toggleAccountStatus(toggleButton, statusLabel));
+
+        // Add Logout Button
+        Button logoutButton = new Button("Logout");
+        logoutButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;");
+        logoutButton.setOnAction(e -> handleLogout());
         
-        panel.getChildren().addAll(statusLabel, toggleButton);
+        panel.getChildren().addAll(statusLabel, toggleButton, logoutButton);
         return panel;
     }
 
     private void updateProfile() {
         try {
             String name = nameField.getText();
+            String username = usernameField.getText();
             int age = Integer.parseInt(ageField.getText());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date birthday = sdf.parse(birthdayField.getText());
 
-            if (userManager.updateUserProfile(currentUser.getId(), name, age, birthday)) {
+            if (userManager.updateUserProfile(currentUser.getId(), name, username, age, birthday)) {
                 showAlert("Success", "Profile updated successfully!", Alert.AlertType.INFORMATION);
                 currentUser = userManager.getUserById(currentUser.getId());
             } else {
@@ -201,6 +211,27 @@ public class SettingsScreen {
         } else {
             showAlert("Error", "Failed to update account status.", Alert.AlertType.ERROR);
         }
+    }
+
+    private void handleLogout() {
+        // Delete the session
+        Database db = new Database();
+        db.deleteSession();
+        
+        // Show confirmation
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Logout");
+        alert.setHeaderText(null);
+        alert.setContentText("You have been successfully logged out.");
+        alert.showAndWait();
+        
+        // Close the settings window
+        stage.close();
+        
+        // Show login screen
+        Stage loginStage = new Stage();
+        LoginScreen loginScreen = new LoginScreen(loginStage, new UserManager());
+        loginScreen.show();
     }
 
     private void showAlert(String title, String content, Alert.AlertType type) {

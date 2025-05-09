@@ -80,57 +80,113 @@ public class UserManager {
     }
 
     // Update user profile
-    public boolean updateUserProfile(int id, String name, int age, Date birthday) {
+    public boolean updateUserProfile(int id, String name, String username, int age, Date birthday) {
+        readAllUsers(); // Ensure users list is up-to-date
         User user = getUserById(id);
         if (user != null) {
             User newUser;
             if (user instanceof Admin) {
                 Admin admin = (Admin) user;
-                newUser = new Admin(admin.getRole(), admin.getWorking_hours(), admin.getNextId(), 
-                    user.getId(), name, age, user.getUserName(), user.getPassword(), 
-                    birthday, UserType.ADMIN, admin.roomManager);
+                newUser = new Admin(
+                    admin.getRole(),
+                    admin.getWorking_hours(),
+                    admin.getNextId(),
+                    user.getId(),
+                    name,
+                    age,
+                    username,
+                    user.getPassword(),
+                    birthday,
+                    UserType.ADMIN,
+                    admin.roomManager
+                );
             } else if (user instanceof Organizer) {
-                newUser = new Organizer(user.getId(), name, age, 
-                    user.getUserName(), user.getPassword(), birthday, UserType.ORGANIZER);
+                newUser = new Organizer(
+                    user.getId(),
+                    name,
+                    age,
+                    username,
+                    user.getPassword(),
+                    birthday,
+                    UserType.ORGANIZER
+                );
             } else if (user instanceof Attendee) {
                 Attendee attendee = (Attendee) user;
-                newUser = new Attendee(user.getId(), name, age, 
-                    user.getUserName(), user.getPassword(), birthday, 
-                    attendee.getGender(), "", attendee.getWallet().getBalance());
+                newUser = new Attendee(
+                    user.getId(),
+                    name,
+                    age,
+                    username,
+                    user.getPassword(),
+                    birthday,
+                    attendee.getGender(),
+                    "",
+                    attendee.getWallet().getBalance()
+                );
             } else {
                 return false;
             }
+            // Preserve the active status
+            newUser.setActive(user.isActive());
             Database db = new Database();
-            db.updateUser(newUser);
-            return true;
+            return db.updateUser(newUser);
         }
         return false;
     }
 
     // Change password
     public boolean changePassword(int id, String oldPassword, String newPassword) {
+        readAllUsers(); // Ensure users list is up-to-date
         User user = getUserById(id);
         if (user != null && user.authenticate(oldPassword)) {
             User newUser;
             if (user instanceof Admin) {
                 Admin admin = (Admin) user;
-                newUser = new Admin(admin.getRole(), admin.getWorking_hours(), admin.getNextId(), 
-                    user.getId(), user.getName(), user.getAge(), user.getUserName(), 
-                    newPassword, user.getBirthday(), UserType.ADMIN, admin.roomManager);
+                newUser = new Admin(
+                    admin.getRole(),
+                    admin.getWorking_hours(),
+                    admin.getNextId(),
+                    user.getId(),
+                    user.getName(),
+                    user.getAge(),
+                    user.getUserName(),
+                    newPassword,
+                    user.getBirthday(),
+                    UserType.ADMIN,
+                    admin.roomManager
+                );
             } else if (user instanceof Organizer) {
-                newUser = new Organizer(user.getId(), user.getName(), user.getAge(), 
-                    user.getUserName(), newPassword, user.getBirthday(), UserType.ORGANIZER);
+                newUser = new Organizer(
+                    user.getId(),
+                    user.getName(),
+                    user.getAge(),
+                    user.getUserName(),
+                    newPassword,
+                    user.getBirthday(),
+                    UserType.ORGANIZER
+                );
             } else if (user instanceof Attendee) {
                 Attendee attendee = (Attendee) user;
-                newUser = new Attendee(user.getId(), user.getName(), user.getAge(), 
-                    user.getUserName(), newPassword, user.getBirthday(), 
-                    attendee.getGender(), "", attendee.getWallet().getBalance());
+                newUser = new Attendee(
+                    user.getId(),
+                    user.getName(),
+                    user.getAge(),
+                    user.getUserName(),
+                    newPassword,
+                    user.getBirthday(),
+                    attendee.getGender(),
+                    "",
+                    attendee.getWallet().getBalance()
+                );
             } else {
                 return false;
             }
+            
+            // Preserve the active status
+            newUser.setActive(user.isActive());
+            
             Database db = new Database();
-            db.updateUser(newUser);
-            return true;
+            return db.updateUser(newUser);
         }
         return false;
     }
@@ -164,6 +220,7 @@ public class UserManager {
         users = db.readUsers();
         return new ArrayList<>(users);
     }
+
     // read all users   
     public void readAllUsers() {
         users.clear();
@@ -195,4 +252,25 @@ public class UserManager {
         }
         return results;
     }
-} 
+
+    //logout
+    public LogoutResponse logout() {
+        try{
+            Database db = new Database();
+            db.deleteSession();
+            return new LogoutResponse(true, "logout successful");
+        }catch(Exception e){
+            return new LogoutResponse(true, "logout failed");
+
+        }
+    }
+}
+
+class LogoutResponse{
+    private boolean success;
+    private String message;
+    public LogoutResponse(boolean success, String message) {
+        this.success = success;
+        this.message = message;
+    }
+}

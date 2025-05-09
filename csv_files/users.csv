@@ -1,3 +1,3 @@
 id,name,age,username,password,birthday,userType,isActive,walletBalance
-2,gerges,18,gerges,gerges,Fri May 09 17:49:52 EEST 2025,ATTENDEE,true,50.00
-1,ahmed,19,ahmed,ahmed,Fri May 09 17:49:48 EEST 2025,ORGANIZER,true,10.00
+1,ahmed,19,ahmed,ahmed,Mon May 01 00:00:00 EEST 2006,ORGANIZER,true,0.00
+2,mahmoud,19,mahmoud,mahmoud,Mon May 01 00:00:00 EEST 2006,ADMIN,true,0.00
