@@ -256,15 +256,34 @@ public class Database {
 
     // Update specific event
     public boolean updateEvent(Event updatedEvent) {
-        List<Event> events = readEvents();
-        for (int i = 0; i < events.size(); i++) {
-            if (events.get(i).getEventId() == updatedEvent.getEventId()) {
-                events.set(i, updatedEvent);
+        if (updatedEvent == null) {
+            return false;
+        }
+        
+        try {
+            List<Event> events = readEvents();
+            if (events.isEmpty()) {
+                return false;
+            }
+
+            boolean found = false;
+            for (int i = 0; i < events.size(); i++) {
+                if (events.get(i).getEventId() == updatedEvent.getEventId()) {
+                    events.set(i, updatedEvent);
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) {
                 saveEvents(events);
                 return true;
             }
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     // Update specific category
