@@ -148,13 +148,19 @@ public class Database {
     // Save Events to CSV
     public void saveEvents(List<Event> events) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(EVENTS_FILE))) {
-            writer.println("eventId,eventName,eventDescription,startTime,endTime,ticketPrice,capacity,categoryId,roomId,organizerId");
+            writer.println("eventId,eventName,eventDescription,startTime,endTime,ticketPrice,capacity,categoryId,roomId,organizerId,attendeeIds");
             for (Event event : events) {
                 int roomId = event.getRoom() != null ? event.getRoom().getId() : -1;
                 int categoryId = event.getCategory() != null ? event.getCategory().getId() : -1;
                 int organizerId = event.getOrganizer() != null ? event.getOrganizer().getId() : -1;
                 
-                writer.println(String.format("%d,%s,%s,%s,%s,%.2f,%d,%d,%d,%d",
+                // Convert attendee list to comma-separated string of IDs
+                String attendeeIds = event.getAttendees().stream()
+                    .map(attendee -> String.valueOf(attendee.getId()))
+                    .reduce((a, b) -> a + ";" + b)
+                    .orElse("");
+                
+                writer.println(String.format("%d,%s,%s,%s,%s,%.2f,%d,%d,%d,%d,%s",
                     event.getEventId(),
                     event.getEventName(),
                     event.getEventDescription(),
@@ -164,36 +170,48 @@ public class Database {
                     event.getCapacity(),
                     categoryId,
                     roomId,
-                    organizerId));
+                    organizerId,
+                    attendeeIds));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     public void saveEvent(Event event) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(EVENTS_FILE, true))) {
-                 int roomId = event.getRoom() != null ? event.getRoom().getId() : -1;
-                int categoryId = event.getCategory() != null ? event.getCategory().getId() : -1;
-                int organizerId = event.getOrganizer() != null ? event.getOrganizer().getId() : -1;
-                
-                writer.println(String.format("%d,%s,%s,%s,%s,%.2f,%d,%d,%d,%d",
-                    event.getEventId(),
-                    event.getEventName(),
-                    event.getEventDescription(),
-                    event.getStartTime(),
-                    event.getEndTime(),
-                    event.getTicketPrice(),
-                    event.getCapacity(),
-                    categoryId,
-                    roomId,
-                    organizerId));
+            int roomId = event.getRoom() != null ? event.getRoom().getId() : -1;
+            int categoryId = event.getCategory() != null ? event.getCategory().getId() : -1;
+            int organizerId = event.getOrganizer() != null ? event.getOrganizer().getId() : -1;
+            
+            // Convert attendee list to comma-separated string of IDs
+            String attendeeIds = event.getAttendees().stream()
+                .map(attendee -> String.valueOf(attendee.getId()))
+                .reduce((a, b) -> a + ";" + b)
+                .orElse("");
+            
+            writer.println(String.format("%d,%s,%s,%s,%s,%.2f,%d,%d,%d,%d,%s",
+                event.getEventId(),
+                event.getEventName(),
+                event.getEventDescription(),
+                event.getStartTime(),
+                event.getEndTime(),
+                event.getTicketPrice(),
+                event.getCapacity(),
+                categoryId,
+                roomId,
+                organizerId,
+                attendeeIds));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     // Read Events from CSV
     public List<Event> readEvents() {
         List<Event> events = new ArrayList<>();
+        List<User> allUsers = readUsers(); // Get all users to map attendee IDs
+        
         try (BufferedReader reader = new BufferedReader(new FileReader(EVENTS_FILE))) {
             String line;
             reader.readLine(); // Skip header
@@ -209,6 +227,7 @@ public class Database {
                 int categoryId = Integer.parseInt(parts[7]);
                 int roomId = Integer.parseInt(parts[8]);
                 int organizerId = Integer.parseInt(parts[9]);
+                String attendeeIdsStr = parts.length > 10 ? parts[10] : "";
 
                 // Create objects with proper null handling
                 Category category = categoryId != -1 ? new Category(categoryId, "", "") : null;
@@ -220,6 +239,20 @@ public class Database {
                 if (room != null) {
                     event.setRoom(room);
                 }
+
+                // Add attendees if any
+                if (!attendeeIdsStr.isEmpty()) {
+                    String[] attendeeIds = attendeeIdsStr.split(";");
+                    for (String attendeeId : attendeeIds) {
+                        int id = Integer.parseInt(attendeeId);
+                        allUsers.stream()
+                            .filter(user -> user.getId() == id && user instanceof Attendee)
+                            .map(user -> (Attendee) user)
+                            .findFirst()
+                            .ifPresent(event::addAttendee);
+                    }
+                }
+
                 events.add(event);
             }
         } catch (IOException e) {
