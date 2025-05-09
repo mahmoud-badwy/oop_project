@@ -20,12 +20,43 @@ public class Organizer extends User {
         return new ArrayList<>(events); // return copy to protect internal list
     }
 
-
-    public void createEvent(Event event) {
-        events.add(event);
+public void createEvent(Event event) {
+        
+        RoomManager roomManager = new RoomManager();
+        List<Room> availableRooms = roomManager.getAvailableRooms(event.getStartTime(), event.getEndTime(), event.getCapacity());
+        
+        if (!availableRooms.isEmpty()) {
+            // Assign the first available room
+            Room selectedRoom = availableRooms.get(0);
+            event.setRoom(selectedRoom);
+            roomManager.occupyroom(selectedRoom);
+            
+            // Add event to organizer's list
+            events.add(event);
+            
+            // Save event to database
+            Database database = new Database();
+            List<Event> allEvents = database.readEvents();
+            allEvents.add(event);
+            database.saveEvents(allEvents);
+            
+            System.out.println("Event created successfully with room: " + selectedRoom.getName());
+        } else {
+            System.out.println("No available rooms for the specified time and capacity.");
+        }
     }
 
+    
+    
 
+   public Event getEventById(int eventId) {
+    for (Event e : events) {
+        if (e.getEventId() == eventId) {
+            return e; 
+        }
+    }
+    return null; 
+}
     public List<Event> getMyEvents() {
         return getEvents();
     }
