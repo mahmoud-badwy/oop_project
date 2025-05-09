@@ -40,7 +40,7 @@ public class Attendee extends User {
             }
         }
         void cancelRegisterForEvent(Event event){
-            if (event.cancelRegistration(Attendee.this)) {
+            if (event.cancelRegistration(this)) {
                 System.out.println("Cancellation successful");
                 events.remove(event);
             }

@@ -46,8 +46,8 @@ public class AttendeeDashboard {
         welcomeLabel.setFont(Font.font("System", FontWeight.BOLD, 24));
 
         // Use the class-level balanceLabel instead of creating a new local variable
-        this.balanceLabel = new Label(String.format("Wallet Balance: $%.2f",
-                currentAttendee.getWallet().getBalance()));
+        this.balanceLabel = new Label("Wallet Balance: "+
+                currentAttendee.getWallet().getBalance());
         balanceLabel.setFont(Font.font("System", 16));
 
         headerBox.getChildren().addAll(welcomeLabel, balanceLabel);
@@ -114,7 +114,7 @@ public class AttendeeDashboard {
             // Create a new dialog
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.setTitle("Edit Balance");
-            dialog.setHeaderText("Current Balance: $" + String.format("%.2f", currentAttendee.getWallet().getBalance()));
+            dialog.setHeaderText("Current Balance: $" +  currentAttendee.getWallet().getBalance());
 
             // Add buttons
             dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -148,7 +148,7 @@ public class AttendeeDashboard {
                         }
                         currentAttendee.getWallet().setBalance(newBalance);
                         System.out.println(currentAttendee.getWallet().getBalance());
-                        balanceLabel.setText(String.format("Wallet Balance: $%.2f", currentAttendee.getWallet().getBalance()));
+                        balanceLabel.setText("Wallet Balance: $"+ currentAttendee.getWallet().getBalance());
                         
                         // Update user in database
                         database.updateUser(currentAttendee);
@@ -173,8 +173,8 @@ public class AttendeeDashboard {
                     // Check if user has enough balance
                     if (currentAttendee.getWallet().getBalance() < selectedEvent.getTicketPrice()) {
                         showAlert("Insufficient Balance", 
-                            "Your wallet balance ($" + String.format("%.2f", currentAttendee.getWallet().getBalance()) + 
-                            ") is less than the ticket price ($" + String.format("%.2f", selectedEvent.getTicketPrice()) + ")", 
+                            "Your wallet balance ($" +  currentAttendee.getWallet().getBalance() +
+                            ") is less than the ticket price ($" +  selectedEvent.getTicketPrice() + ")",
                             Alert.AlertType.ERROR);
                         return;
                     }
@@ -196,12 +196,12 @@ public class AttendeeDashboard {
                     }
                     currentAttendee.registerForEvent(selectedEvent);
                     // Update balance label in UI
-                    balanceLabel.setText(String.format("Wallet Balance: $%.2f", currentAttendee.getWallet().getBalance()));
+                    balanceLabel.setText("Wallet Balance: $" +currentAttendee.getWallet().getBalance());
                     refreshEventList();
                     showAlert("Registration Successful",
                             "You have successfully registered for: " + selectedEvent.getEventName() +
-                            "\nTicket Price: $" + String.format("%.2f", selectedEvent.getTicketPrice()) +
-                            "\nRemaining Balance: $" + String.format("%.2f", currentAttendee.getWallet().getBalance()),
+                            "\nTicket Price: $" +  selectedEvent.getTicketPrice() +
+                            "\nRemaining Balance: $" + currentAttendee.getWallet().getBalance(),
                             Alert.AlertType.INFORMATION);
                 } catch (Exception ex) {
                     showAlert("Registration Failed",
@@ -221,25 +221,31 @@ public class AttendeeDashboard {
             if (selectedEvent != null) {
                 try {
                     // Check if user is actually registered for this event
-                    if (!currentAttendee.isRegisteredForEvent(selectedEvent)) {
-                        showAlert("Not Registered", 
-                            "You are not registered for this event: " + selectedEvent.getEventName(), 
-                            Alert.AlertType.WARNING);
-                        return;
-                    }
+                    System.out.println(selectedEvent.getAttendees().toString());
+                    System.out.println(currentAttendee.getId());
+                    for(Attendee attendee : selectedEvent.getAttendees()){
+                        if (attendee.getId() == currentAttendee.getId()) {
+                            currentAttendee.cancelRegisterForEvent(selectedEvent);
 
-                    currentAttendee.cancelRegisterForEvent(selectedEvent);
-                    // Update both attendee and organizer in database
-                    database.updateUser(currentAttendee);
-                    database.updateUser(selectedEvent.getOrganizer());
-                    // Update balance label in UI
-                    balanceLabel.setText(String.format("Wallet Balance: $%.2f", currentAttendee.getWallet().getBalance()));
-                    refreshEventList();
-                    showAlert("Cancellation Successful",
-                            "Your registration for: " + selectedEvent.getEventName() + " has been cancelled.\n" +
-                            "Refunded Amount: $" + String.format("%.2f", selectedEvent.getTicketPrice()) +
-                            "\nUpdated Balance: $" + String.format("%.2f", currentAttendee.getWallet().getBalance()),
-                            Alert.AlertType.INFORMATION);
+                            // Update balance label in UI
+                            balanceLabel.setText("Wallet Balance: $" + currentAttendee.getWallet().getBalance());
+                            refreshEventList();
+                            showAlert("Cancellation Successful",
+                                    "Your registration for: " + selectedEvent.getEventName() + " has been cancelled.\n" +
+                                            "Refunded Amount: $" + (selectedEvent.getTicketPrice()*0.8) +
+                                            "\nUpdated Balance: $" + (currentAttendee.getWallet().getBalance()),
+                                    Alert.AlertType.INFORMATION);
+
+                            return;
+
+
+                        }
+
+                    }
+                    showAlert("Not Registered",
+                            "You are not registered for this event: " + selectedEvent.getEventName(),
+                            Alert.AlertType.WARNING);
+
                 } catch (Exception ex) {
                     showAlert("Cancellation Failed",
                             "Could not cancel the registration: " + ex.getMessage(),
@@ -277,7 +283,7 @@ public class AttendeeDashboard {
         for (User user : database.readUsers()) {
             if (user instanceof Attendee && user.getId() == currentAttendee.getId()) {
                 currentAttendee = (Attendee) user;
-                balanceLabel.setText(String.format("Wallet Balance: $%.2f", currentAttendee.getWallet().getBalance()));
+                balanceLabel.setText("Wallet Balance: $"+ currentAttendee.getWallet().getBalance());
                 break;
             }
         }
