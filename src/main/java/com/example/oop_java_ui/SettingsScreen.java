@@ -16,6 +16,7 @@ public class SettingsScreen {
     private User currentUser;
     private UserManager userManager;
     private TextField nameField;
+    private TextField usernameField;
     private TextField ageField;
     private TextField birthdayField;
     private PasswordField currentPasswordField;
@@ -73,6 +74,7 @@ public class SettingsScreen {
         panel.setAlignment(Pos.CENTER);
         
         nameField = new TextField(currentUser.getName());
+        usernameField = new TextField(currentUser.getUserName());
         ageField = new TextField(String.valueOf(currentUser.getAge()));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         birthdayField = new TextField(sdf.format(currentUser.getBirthday()));
@@ -84,10 +86,12 @@ public class SettingsScreen {
         
         grid.add(new Label("Name:"), 0, 0);
         grid.add(nameField, 1, 0);
-        grid.add(new Label("Age:"), 0, 1);
-        grid.add(ageField, 1, 1);
-        grid.add(new Label("Birthday (yyyy-MM-dd):"), 0, 2);
-        grid.add(birthdayField, 1, 2);
+        grid.add(new Label("Username:"), 0, 1);
+        grid.add(usernameField, 1, 1);
+        grid.add(new Label("Age:"), 0, 2);
+        grid.add(ageField, 1, 2);
+        grid.add(new Label("Birthday (yyyy-MM-dd):"), 0, 3);
+        grid.add(birthdayField, 1, 3);
         
         Button updateButton = new Button("Update Profile");
         updateButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;");
@@ -150,11 +154,12 @@ public class SettingsScreen {
     private void updateProfile() {
         try {
             String name = nameField.getText();
+            String username = usernameField.getText();
             int age = Integer.parseInt(ageField.getText());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date birthday = sdf.parse(birthdayField.getText());
 
-            if (userManager.updateUserProfile(currentUser.getId(), name, age, birthday)) {
+            if (userManager.updateUserProfile(currentUser.getId(), name, username, age, birthday)) {
                 showAlert("Success", "Profile updated successfully!", Alert.AlertType.INFORMATION);
                 currentUser = userManager.getUserById(currentUser.getId());
             } else {
