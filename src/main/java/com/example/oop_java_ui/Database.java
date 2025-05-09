@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Database {
-    private final String baseUrl ="C://Users//mahmo//IdeaProjects//oop_java_ui//";
+    private final String baseUrl ="C://Users//gerge//Downloads//New folder//oop_project//";
     private  final String USERS_FILE =baseUrl +  "csv_files//users.csv";
     private  final String ROOMS_FILE =baseUrl + "csv_files//rooms.csv";
     private  final String CATEGORIES_FILE =baseUrl + "csv_files//categories.csv";
@@ -286,7 +286,7 @@ public class Database {
                 if (users.get(i).getId() == updatedUser.getId()) {
                     System.out.println("updateUser: found user with ID " + updatedUser.getId());
                     double currentBalance = users.get(i).getWallet().getBalance();
-                    updatedUser.getWallet().setBalance(currentBalance);
+                    updatedUser.getWallet().setBalance(updatedUser.getWallet().getBalance());
                     updatedUser.setActive(users.get(i).isActive());
                     users.set(i, updatedUser);
                     found = true;

@@ -147,7 +147,8 @@ public class AttendeeDashboard {
                             return null;
                         }
                         currentAttendee.getWallet().setBalance(newBalance);
-                        balanceLabel.setText(String.format("Wallet Balance: $%.2f", newBalance));
+                        System.out.println(currentAttendee.getWallet().getBalance());
+                        balanceLabel.setText(String.format("Wallet Balance: $%.2f", currentAttendee.getWallet().getBalance()));
                         
                         // Update user in database
                         database.updateUser(currentAttendee);
@@ -195,8 +196,7 @@ public class AttendeeDashboard {
                     }
 
                     currentAttendee.registerForEvent(selectedEvent);
-                    // Update both attendee and organizer in database
-                    database.updateUser(currentAttendee);
+                    // Update both attendee and organizer in databasedatabase.updateUser(currentAttendee);
                     database.updateUser(selectedEvent.getOrganizer());
                     // Update balance label in UI
                     balanceLabel.setText(String.format("Wallet Balance: $%.2f", currentAttendee.getWallet().getBalance()));
