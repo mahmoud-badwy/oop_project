@@ -12,7 +12,7 @@ import java.util.List;
 
 public class EventCreationDashboard {
     private Organizer organizer;
-    private CategoryManager catmanager;
+    private CategoryManager catmanager = new CategoryManager();
 
     public EventCreationDashboard(Stage stage, Organizer organizer) {
         this.organizer = organizer;

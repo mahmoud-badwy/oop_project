@@ -57,7 +57,8 @@ public class CategoryManager {
 
     // Search categories by name
     public List<Category> searchCategoriesByName(String name) {
-        List<Category> results = new ArrayList<>();
+        Database db = new Database();
+        List<Category> results = db.readCategories();
         for (Category category : categories) {
             if (category.getName().toLowerCase().contains(name.toLowerCase())) {
                 results.add(category);

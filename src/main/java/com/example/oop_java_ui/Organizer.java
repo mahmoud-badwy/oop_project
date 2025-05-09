@@ -21,29 +21,13 @@ public class Organizer extends User {
     }
 
 public void createEvent(Event event) {
-        
-        RoomManager roomManager = new RoomManager();
-        List<Room> availableRooms = roomManager.getAvailableRooms(event.getStartTime(), event.getEndTime(), event.getCapacity());
-        
-        if (!availableRooms.isEmpty()) {
-            // Assign the first available room
-            Room selectedRoom = availableRooms.get(0);
-            event.setRoom(selectedRoom);
-            roomManager.occupyroom(selectedRoom);
-            
-            // Add event to organizer's list
-            events.add(event);
-            
-            // Save event to database
-            Database database = new Database();
-            List<Event> allEvents = database.readEvents();
-            allEvents.add(event);
-            database.saveEvents(allEvents);
-            
-            System.out.println("Event created successfully with room: " + selectedRoom.getName());
-        } else {
-            System.out.println("No available rooms for the specified time and capacity.");
-        }
+    events.add(event);
+    Database db = new Database();
+    db.saveEvents(events);
+
+
+
+
     }
 
     
@@ -61,12 +45,7 @@ public void createEvent(Event event) {
         return getEvents();
     }
 
-    public Event getEventById(int eventId) {
-        for (Event e : events) {
-            if (e.getEventId() == eventId) return e;
-        }
-        return null;
-    }
+
 
     // UPDATE
     public boolean updateEvent(int eventId, Event updatedEvent) {
