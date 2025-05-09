@@ -62,22 +62,17 @@ public class RoomManager {
 
     }
 
-    public List<Room> getAvailableRooms(LocalTime startTime, LocalTime endTime, int capacity) {
+    public List<Room> getAvailableRooms(int capacity) {
         Database db = new Database();
-        List<Room> availableRooms = db.readRooms();
-        Room.TimeSlot targetSlot = new Room.TimeSlot(startTime, endTime);
+        List<Room> availableRooms = db.readRooms();  // Assuming this method fetches the list of rooms
 
-        for (Room room : rooms) {
+        for (Room room : availableRooms) {
             // Check if room has sufficient capacity
             if (room.getCapacity() >= capacity) {
-                // Check if the room is available during the requested time slot
-                if (room.getAvailableSlots() != null && 
-                    room.getAvailableSlots().overlapsWith(targetSlot)) {
-                    availableRooms.add(room);
-                }
+                // If the room meets the capacity requirement, add it to the available list
+                availableRooms.add(room);
             }
         }
-
         return availableRooms;
     }
 

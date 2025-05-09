@@ -8,6 +8,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BookRoomScreen {
     private RoomManager roomManager = new RoomManager();
     private Admin admin;
@@ -35,15 +38,28 @@ public class BookRoomScreen {
             try{
                 int eID = Integer.parseInt(eventIdField.getText());
                 Event event = loggedorganizer.getEventById(eID);
+                Database db = new Database();
+                List<User> users =db.readUsers();
+                List<User> admins = new ArrayList<>();
+                for (User user : users) {
+                    if (user instanceof Admin) {
+                        admins.add(user);
+                    }
+                }
+                User admin = admins.get(0);
+
+
                 if (loggedorganizer.bookroom(event,roomManager,admin)){
 
-                    feedbackLabel.setText("Room Booked successfully!");
 
+                    feedbackLabel.setText("Book successful");
                 }
                 else {
-                    feedbackLabel.setText("No rooms available for the given time and capacity.");
+
+                    feedbackLabel.setText("Transfer failed. Insufficient balance/No rooms available for the given time and capacity.");
 
                 }
+
 
 
 

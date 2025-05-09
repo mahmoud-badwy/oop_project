@@ -85,9 +85,9 @@ public void createEvent(Event event) {
         }
     }
 
-    public boolean bookroom(Event event, RoomManager roommanager, Admin admin) {
+    public boolean bookroom(Event event, RoomManager roommanager, User admin) {
         Database db = new Database();
-        List<Room> roomcheck = roommanager.getAvailableRooms(event.getStartTime(), event.getEndTime(), event.getCapacity());
+        List<Room> roomcheck = roommanager.getAvailableRooms(event.getCapacity());
         long hours = Duration.between(event.getStartTime(), event.getEndTime()).toHours();
         long price = hours * 10;
 
@@ -116,10 +116,10 @@ public void createEvent(Event event) {
 
     RoomManager m = new RoomManager ();
 
-    void showAvailableROOMS(RoomManager m, LocalTime startTime, LocalTime endTime, int capacity)
-    {
-        System.out.println( m.getAvailableRooms( startTime,  endTime,  capacity));
-    }
+//    void showAvailableROOMS(RoomManager m, LocalTime startTime, LocalTime endTime, int capacity)
+//    {
+//        System.out.println( m.getAvailableRooms( startTime,  endTime,  capacity));
+//    }
 
 
     public void readAttendees(int eventId) {
