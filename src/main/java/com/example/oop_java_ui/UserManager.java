@@ -253,25 +253,4 @@ public class UserManager {
         }
         return results;
     }
-
-    //logout
-    public LogoutResponse logout() {
-        try{
-            Database db = new Database();
-            db.deleteSession();
-            return new LogoutResponse(true, "logout successful");
-        }catch(Exception e){
-            return new LogoutResponse(true, "logout failed");
-
-        }
-    }
-}
-
-class LogoutResponse{
-    private boolean success;
-    private String message;
-    public LogoutResponse(boolean success, String message) {
-        this.success = success;
-        this.message = message;
-    }
 }

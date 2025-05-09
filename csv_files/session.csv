@@ -1,2 +1,1 @@
 id,name,age,username,password,birthday,userType,isActive,walletBalance
-1,ahmed,10,ahmed,ahmed,Wed Apr 30 00:00:00 EEST 2025,ATTENDEE,true,15000.00
