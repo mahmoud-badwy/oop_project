@@ -235,6 +235,7 @@ public class Database {
             if (users.get(i).getId() == updatedUser.getId()) {
                 users.set(i, updatedUser);
                 saveUsers(users);
+                deleteSession();
                 return true;
             }
         }
