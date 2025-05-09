@@ -198,4 +198,56 @@ public class Database {
         }
         return events;
     }
+
+    // Update specific user
+    public boolean updateUser(User updatedUser) {
+        List<User> users = readUsers();
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getId() == updatedUser.getId()) {
+                users.set(i, updatedUser);
+                saveUsers(users);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Update specific room
+    public boolean updateRoom(Room updatedRoom) {
+        List<Room> rooms = readRooms();
+        for (int i = 0; i < rooms.size(); i++) {
+            if (rooms.get(i).getId() == updatedRoom.getId()) {
+                rooms.set(i, updatedRoom);
+                saveRooms(rooms);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Update specific event
+    public boolean updateEvent(Event updatedEvent) {
+        List<Event> events = readEvents();
+        for (int i = 0; i < events.size(); i++) {
+            if (events.get(i).getEventId() == updatedEvent.getEventId()) {
+                events.set(i, updatedEvent);
+                saveEvents(events);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Update specific category
+    public boolean updateCategory(Category updatedCategory) {
+        List<Category> categories = readCategories();
+        for (int i = 0; i < categories.size(); i++) {
+            if (categories.get(i).getId() == updatedCategory.getId()) {
+                categories.set(i, updatedCategory);
+                saveCategories(categories);
+                return true;
+            }
+        }
+        return false;
+    }
 }
