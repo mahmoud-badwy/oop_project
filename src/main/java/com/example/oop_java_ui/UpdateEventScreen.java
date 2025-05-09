@@ -14,7 +14,7 @@ import java.util.List;
 
 public class UpdateEventScreen {
     private Organizer organizer;
-    private CategoryManager catmanager;
+    private CategoryManager catmanager = new CategoryManager();
 
     public UpdateEventScreen(Stage stage, Organizer organizer) {
         this.organizer = organizer;
@@ -69,7 +69,8 @@ public class UpdateEventScreen {
                 Category category = holder.get(0);
 
                 Event event = organizer.getEventById(eventId);
-                event.updateEvent(name,desc,start,end,price,category);
+                Database db = new Database();
+                db.updateEvent(event);
 
 
 
