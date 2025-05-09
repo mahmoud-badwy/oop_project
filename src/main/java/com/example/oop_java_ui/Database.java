@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Database {
-    private final String baseUrl ="C://Users//Acer//Documents//OOP project//oop_project//";
+    private final String baseUrl ="C://Users//mahmo//IdeaProjects//oop_java_ui//";
     private  final String USERS_FILE =baseUrl +  "csv_files//users.csv";
     private  final String ROOMS_FILE =baseUrl + "csv_files//rooms.csv";
     private  final String CATEGORIES_FILE =baseUrl + "csv_files//categories.csv";
@@ -18,6 +18,7 @@ public class Database {
     public  void saveUsers(List<User> users) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(USERS_FILE))) {
             writer.println("id,name,age,username,password,birthday,userType,isActive,walletBalance");
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
             for (User user : users) {
                 writer.println(String.format("%d,%s,%d,%s,%s,%s,%s,%b,%.2f",
                     user.getId(),
@@ -25,7 +26,7 @@ public class Database {
                     user.getAge(),
                     user.getUserName(),
                     user.getPassword(),
-                    user.getBirthday(),
+                    sdf.format(user.getBirthday()),
                     user.getUserType(),
                     user.isActive(),
                     user.getWallet().getBalance()));
@@ -38,6 +39,7 @@ public class Database {
     // Read Users from CSV
     public  List<User> readUsers() {
         List<User> users = new ArrayList<>();
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
         try (BufferedReader reader = new BufferedReader(new FileReader(USERS_FILE))) {
             String line;
             reader.readLine(); // Skip header
@@ -48,7 +50,12 @@ public class Database {
                 int age = Integer.parseInt(parts[2]);
                 String username = parts[3];
                 String password = parts[4];
-                Date birthday = new Date();
+                java.util.Date birthday;
+                try {
+                    birthday = sdf.parse(parts[5]);
+                } catch (java.text.ParseException e) {
+                    birthday = new java.util.Date(); // fallback to current date
+                }
                 UserType userType = UserType.valueOf(parts[6]);
                 boolean isActive = Boolean.parseBoolean(parts[7]);
                 double walletBalance = Double.parseDouble(parts[8]);
@@ -263,15 +270,41 @@ public class Database {
 
     // Update specific user
     public boolean updateUser(User updatedUser) {
-        List<User> users = readUsers();
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getId() == updatedUser.getId()) {
-                users.set(i, updatedUser);
+        if (updatedUser == null) {
+            System.out.println("updateUser: updatedUser is null");
+            return false;
+        }
+        try {
+            List<User> users = readUsers();
+            if (users.isEmpty()) {
+                System.out.println("updateUser: users list is empty after reading CSV");
+                return false;
+            }
+            boolean found = false;
+            for (int i = 0; i < users.size(); i++) {
+                System.out.println("updateUser: checking user with ID " + users.get(i).getId());
+                if (users.get(i).getId() == updatedUser.getId()) {
+                    System.out.println("updateUser: found user with ID " + updatedUser.getId());
+                    double currentBalance = users.get(i).getWallet().getBalance();
+                    updatedUser.getWallet().setBalance(currentBalance);
+                    updatedUser.setActive(users.get(i).isActive());
+                    users.set(i, updatedUser);
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
                 saveUsers(users);
+                System.out.println("updateUser: user updated and saved");
+                deleteSession();
                 return true;
             }
+            System.out.println("updateUser: user with ID " + updatedUser.getId() + " not found");
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     // Update specific room

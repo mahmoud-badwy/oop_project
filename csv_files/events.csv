@@ -1,2 +1,2 @@
-eventId,eventName,eventDescription,startTime,endTime,ticketPrice,capacity,categoryId,roomId,organizerId
-3,name,anem,20:20,21:21,10.00,3,2,-1,1
+eventId,eventName,eventDescription,startTime,endTime,ticketPrice,capacity,categoryId,roomId,organizerId,attendeeIds
+4,event,evenr,10:01,20:20,23.00,3,2,-1,1,
