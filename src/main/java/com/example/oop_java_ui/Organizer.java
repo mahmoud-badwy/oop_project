@@ -34,7 +34,8 @@ public void createEvent(Event event) {
     
 
    public Event getEventById(int eventId) {
-    for (Event e : events) {
+        Database db = new Database();
+    for (Event e : db.readEvents()) {
         if (e.getEventId() == eventId) {
             return e; 
         }

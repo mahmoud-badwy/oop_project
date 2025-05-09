@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class BookRoomScreen {
-    private RoomManager roomManager;
+    private RoomManager roomManager = new RoomManager();
     private Admin admin;
     private Organizer loggedorganizer;
 
