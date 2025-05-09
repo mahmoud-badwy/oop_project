@@ -67,9 +67,10 @@ public class OrganizerDashboard {
         Button bookRoomBtn = new Button("Book Room for Event");
         Button viewAttendeesBtn = new Button("View Attendees");
         Button logoutBtn = new Button("Logout");
+        Button settingsBtn = new Button("Settings");
 
         // Style Buttons
-        for (Button btn : new Button[]{createEventBtn, viewEventsBtn, updateEventBtn, deleteEventBtn, bookRoomBtn, viewAttendeesBtn, logoutBtn}) {
+        for (Button btn : new Button[]{createEventBtn, viewEventsBtn, updateEventBtn, deleteEventBtn, bookRoomBtn, viewAttendeesBtn, logoutBtn, settingsBtn}) {
             btn.setPrefWidth(300);
             btn.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;");
         }
@@ -82,6 +83,7 @@ public class OrganizerDashboard {
         bookRoomBtn.setOnAction(e -> showBookRoomForm());
         viewAttendeesBtn.setOnAction(e -> showAttendeeListForm());
         logoutBtn.setOnAction(e -> logout());
+        settingsBtn.setOnAction(e -> showSettings());
 
         mainContainer.getChildren().addAll(
                 title2Label,
@@ -95,6 +97,7 @@ public class OrganizerDashboard {
                 roomWrapper,
                 bookRoomBtn,
                 accWrapper,
+                settingsBtn,
                 logoutBtn
         );
 
@@ -185,6 +188,12 @@ public class OrganizerDashboard {
         organizer.setActive(false);
         stage.close();
 
+    }
+
+    private void showSettings() {
+        Stage settingsStage = new Stage();
+        new SettingsScreen(settingsStage, organizer);
+        settingsStage.show();
     }
 
 }

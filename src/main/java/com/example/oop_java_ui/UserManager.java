@@ -81,9 +81,25 @@ public class UserManager {
     public boolean updateUserProfile(int id, String name, int age, Date birthday) {
         User user = getUserById(id);
         if (user != null) {
-            user.setName(name);
-            user.setAge(age);
-            user.setBirthday(birthday);
+            User newUser;
+            if (user instanceof Admin) {
+                Admin admin = (Admin) user;
+                newUser = new Admin(admin.getRole(), admin.getWorking_hours(), admin.getNextId(), 
+                    user.getId(), name, age, user.getUserName(), user.getPassword(), 
+                    birthday, UserType.ADMIN, admin.roomManager);
+            } else if (user instanceof Organizer) {
+                newUser = new Organizer(user.getId(), name, age, 
+                    user.getUserName(), user.getPassword(), birthday, UserType.ORGANIZER);
+            } else if (user instanceof Attendee) {
+                Attendee attendee = (Attendee) user;
+                newUser = new Attendee(user.getId(), name, age, 
+                    user.getUserName(), user.getPassword(), birthday, 
+                    attendee.getGender(), "", attendee.getWallet().getBalance());
+            } else {
+                return false;
+            }
+            Database db = new Database();
+            db.updateUser(newUser);
             return true;
         }
         return false;
@@ -93,7 +109,25 @@ public class UserManager {
     public boolean changePassword(int id, String oldPassword, String newPassword) {
         User user = getUserById(id);
         if (user != null && user.authenticate(oldPassword)) {
-            user.setPassword(newPassword);
+            User newUser;
+            if (user instanceof Admin) {
+                Admin admin = (Admin) user;
+                newUser = new Admin(admin.getRole(), admin.getWorking_hours(), admin.getNextId(), 
+                    user.getId(), user.getName(), user.getAge(), user.getUserName(), 
+                    newPassword, user.getBirthday(), UserType.ADMIN, admin.roomManager);
+            } else if (user instanceof Organizer) {
+                newUser = new Organizer(user.getId(), user.getName(), user.getAge(), 
+                    user.getUserName(), newPassword, user.getBirthday(), UserType.ORGANIZER);
+            } else if (user instanceof Attendee) {
+                Attendee attendee = (Attendee) user;
+                newUser = new Attendee(user.getId(), user.getName(), user.getAge(), 
+                    user.getUserName(), newPassword, user.getBirthday(), 
+                    attendee.getGender(), "", attendee.getWallet().getBalance());
+            } else {
+                return false;
+            }
+            Database db = new Database();
+            db.updateUser(newUser);
             return true;
         }
         return false;
@@ -101,6 +135,7 @@ public class UserManager {
 
     // Deactivate user account
     public boolean deactivateAccount(int id) {
+
         User user = getUserById(id);
         if (user != null) {
             user.setActive(false);
@@ -111,6 +146,7 @@ public class UserManager {
 
     // Reactivate user account
     public boolean reactivateAccount(int id) {
+      
         User user = getUserById(id);
         if (user != null) {
             user.setActive(true);
@@ -121,11 +157,21 @@ public class UserManager {
 
     // Get all users (for admin purposes)
     public List<User> getAllUsers() {
+        users.clear();
+        Database db = new Database();
+        users = db.readUsers();
         return new ArrayList<>(users);
+    }
+    // read all users   
+    public void readAllUsers() {
+        users.clear();
+        Database db = new Database();
+        users = db.readUsers();
     }
 
     // Search users by name
     public List<User> searchUsersByName(String name) {
+        readAllUsers();
         List<User> results = new ArrayList<>();
         for (User user : users) {
             if (user.getName().toLowerCase().contains(name.toLowerCase())) {
@@ -137,6 +183,8 @@ public class UserManager {
 
     // Get users by type
     public List<User> getUsersByType(UserType userType) {
+        readAllUsers();
+
         List<User> results = new ArrayList<>();
         for (User user : users) {
             if (user.getUserType() == userType) {

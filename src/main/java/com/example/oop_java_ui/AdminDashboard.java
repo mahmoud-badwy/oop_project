@@ -74,7 +74,17 @@ public class AdminDashboard {
         Label welcomeLabel = new Label("Welcome, " + admin.getName());
         welcomeLabel.setFont(Font.font(20));
         welcomeLabel.setStyle("-fx-text-fill: #2c3e50;");
-        mainLayout.getChildren().add(welcomeLabel);
+        
+        // Add Settings Button
+        Button settingsButton = new Button("Settings");
+        settingsButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-padding: 8 15;");
+        settingsButton.setOnAction(e -> showSettings());
+        
+        HBox topBar = new HBox(10);
+        topBar.setAlignment(Pos.CENTER_LEFT);
+        topBar.getChildren().addAll(welcomeLabel, settingsButton);
+        
+        mainLayout.getChildren().add(topBar);
 
         // Display Area
         displayArea = new TextArea();
@@ -598,6 +608,12 @@ public class AdminDashboard {
     public void show() {
         createUI();
         Platform.runLater(() -> stage.show());
+    }
+
+    private void showSettings() {
+        Stage settingsStage = new Stage();
+        new SettingsScreen(settingsStage, admin);
+        settingsStage.show();
     }
 } 
  

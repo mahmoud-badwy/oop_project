@@ -57,9 +57,10 @@ public class AttendeeDashboard {
         Button registerButton = new Button("Register");
         Button cancelButton = new Button("Cancel Registration");
         Button refreshButton = new Button("Refresh Events");
+        Button settingsButton = new Button("Settings");
 
         HBox buttonBox = new HBox(10);
-        buttonBox.getChildren().addAll(registerButton, cancelButton, refreshButton);
+        buttonBox.getChildren().addAll(registerButton, cancelButton, refreshButton, settingsButton);
 
         // Add components to main layout
         mainLayout.getChildren().addAll(eventTable, buttonBox);
@@ -89,6 +90,9 @@ public class AttendeeDashboard {
         // Handle refresh button action
         refreshButton.setOnAction(e -> refreshEventList());
 
+        // Handle settings button action
+        settingsButton.setOnAction(e -> showSettings());
+
         // Create scene
         Scene scene = new Scene(mainLayout, 800, 600);
         stage.setScene(scene);
@@ -106,6 +110,12 @@ public class AttendeeDashboard {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void showSettings() {
+        Stage settingsStage = new Stage();
+        new SettingsScreen(settingsStage, currentAttendee);
+        settingsStage.show();
     }
 
     public void show() {

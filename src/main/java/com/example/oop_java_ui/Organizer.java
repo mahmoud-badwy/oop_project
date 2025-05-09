@@ -15,13 +15,11 @@ public class Organizer extends User {
         this.events = new ArrayList<>();
     }
 
-
     public List<Event> getEvents() {
         return new ArrayList<>(events); // return copy to protect internal list
     }
 
-public void createEvent(Event event) {
-        
+    public void createEvent(Event event) {
         RoomManager roomManager = new RoomManager();
         List<Room> availableRooms = roomManager.getAvailableRooms(event.getStartTime(), event.getEndTime(), event.getCapacity());
         
@@ -46,29 +44,19 @@ public void createEvent(Event event) {
         }
     }
 
-    
-    
-
-   public Event getEventById(int eventId) {
-    for (Event e : events) {
-        if (e.getEventId() == eventId) {
-            return e; 
-        }
-    }
-    return null; 
-}
-    public List<Event> getMyEvents() {
-        return getEvents();
-    }
-
     public Event getEventById(int eventId) {
         for (Event e : events) {
-            if (e.getEventId() == eventId) return e;
+            if (e.getEventId() == eventId) {
+                return e;
+            }
         }
         return null;
     }
 
-    // UPDATE
+    public List<Event> getMyEvents() {
+        return getEvents();
+    }
+
     public boolean updateEvent(int eventId, Event updatedEvent) {
         for (int i = 0; i < events.size(); i++) {
             if (events.get(i).getEventId() == eventId) {
@@ -79,38 +67,35 @@ public void createEvent(Event event) {
         return false;
     }
 
-    // DELETE
     public boolean deleteEvent(int eventId) {
         return events.removeIf(e -> e.getEventId() == eventId);
     }
 
-    // Show all events
     public void showMyEvents() {
         for (Event e : events) {
             System.out.println(e);
         }
     }
 
-    public boolean bookroom(Event event, RoomManager roommanager, Admin admin) {
-        List<Room> roomcheck = roommanager.getAvailableRooms(event.getStartTime(), event.getEndTime(), event.getCapacity());
+    public boolean bookRoom(Event event, RoomManager roomManager, Admin admin) {
+        List<Room> availableRooms = roomManager.getAvailableRooms(event.getStartTime(), event.getEndTime(), event.getCapacity());
         long hours = Duration.between(event.getStartTime(), event.getEndTime()).toHours();
         long price = hours * 10;
-        if (!roomcheck.isEmpty()) {
-            roommanager.occupyroom(roomcheck.get(0));
-            Organizer.super.getWallet().transfer(price, admin.getWallet());
-            event.setRoom(roomcheck.get(0));
+        
+        if (!availableRooms.isEmpty()) {
+            Room selectedRoom = availableRooms.get(0);
+            roomManager.occupyroom(selectedRoom);
+            super.getWallet().transfer(price, admin.getWallet());
+            event.setRoom(selectedRoom);
             return true;
-
-        } else return false;
+        }
+        return false;
     }
 
-    RoomManager m = new RoomManager ();
-
-    void showAvailableROOMS(RoomManager m, LocalTime startTime, LocalTime endTime, int capacity)
-    {
-        System.out.println( m.getAvailableRooms( startTime,  endTime,  capacity));
+    public void showAvailableRooms(LocalTime startTime, LocalTime endTime, int capacity) {
+        RoomManager roomManager = new RoomManager();
+        System.out.println(roomManager.getAvailableRooms(startTime, endTime, capacity));
     }
-
 
     public void readAttendees(int eventId) {
         Event event = getEventById(eventId);
