@@ -33,7 +33,7 @@ public class Attendee extends User {
             setUserType(UserType.ATTENDEE);
         }
         void registerForEvent(Event event){
-            if(event.addAttendee(Attendee.this)) {
+            if(event.addAttendee(this)) {
                 System.out.println("Registration successful");
                 events.add(event);
 

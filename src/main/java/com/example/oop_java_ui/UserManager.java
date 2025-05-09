@@ -61,6 +61,7 @@ public class UserManager {
 
     // Get user by ID
     public User getUserById(int id) {
+        readAllUsers();
         for (User user : users) {
             if (user.getId() == id) {
                 return user;

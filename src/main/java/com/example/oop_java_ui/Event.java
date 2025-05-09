@@ -107,9 +107,15 @@ public class Event {
             return false;
         }
         attendee.getWallet().transfer(ticketPrice,organizer.getWallet());
+        UserManager userManager = new UserManager();
+        User user =  userManager.getUserById(this.getOrganizer().getId());
+        Organizer org = (Organizer) user;
         attendees.add(attendee);
+        System.out.println(attendee.getWallet().getBalance());
         Database db = new Database();
         db.updateUser(attendee);
+        org.setWallet(organizer.getWallet());
+        db.updateUser(org);
         db.updateEvent(this);
         return true;
     }

@@ -194,10 +194,7 @@ public class AttendeeDashboard {
                             Alert.AlertType.WARNING);
                         return;
                     }
-
                     currentAttendee.registerForEvent(selectedEvent);
-                    // Update both attendee and organizer in databasedatabase.updateUser(currentAttendee);
-                    database.updateUser(selectedEvent.getOrganizer());
                     // Update balance label in UI
                     balanceLabel.setText(String.format("Wallet Balance: $%.2f", currentAttendee.getWallet().getBalance()));
                     refreshEventList();

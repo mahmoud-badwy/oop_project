@@ -1,2 +1,2 @@
 eventId,eventName,eventDescription,startTime,endTime,ticketPrice,capacity,categoryId,roomId,organizerId,attendeeIds
-1,Music,Music,20:20,20:30,50.00,1,2,-1,2,1
+1,mah,mah,20:20,21:21,20.00,2,2,-1,2,1
