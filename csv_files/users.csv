@@ -1,3 +1,2 @@
 id,name,age,username,password,birthday,userType,isActive,walletBalance
-1,gerges,18,gerges,gerges,2025-05-21,ATTENDEE,true,0.00
-2,,0,,,2025-05-09,ORGANIZER,true,50.00
+1,gerges,18,gerges,gerges,2025-05-21,ADMIN,true,0.00
