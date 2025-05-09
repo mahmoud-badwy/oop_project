@@ -12,6 +12,7 @@ public class Database {
     private  final String ROOMS_FILE =baseUrl + "csv_files//rooms.csv";
     private  final String CATEGORIES_FILE =baseUrl + "csv_files//categories.csv";
     private  final String EVENTS_FILE =baseUrl + "csv_files//events.csv";
+    private  final String SESSION_FILE =baseUrl + "csv_files//session.csv";
 
     // Save Users to CSV
     public  void saveUsers(List<User> users) {
@@ -304,4 +305,81 @@ public class Database {
         }
         return false;
     }
+
+    // Save Session to CSV
+    public void saveSession(User user) {
+           try (PrintWriter writer = new PrintWriter(new FileWriter(SESSION_FILE))) {
+            writer.println("id,name,age,username,password,birthday,userType,isActive,walletBalance");
+            writer.println(String.format("%d,%s,%d,%s,%s,%s,%s,%b,%.2f",
+                    user.getId(),
+                    user.getName(),
+                    user.getAge(),
+                    user.getUserName(),
+                    user.getPassword(),
+                    user.getBirthday(),
+                    user.getUserType(),
+                    user.isActive(),
+                    user.getWallet().getBalance() ) );
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //delete session by id
+    public void deleteSession() {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(SESSION_FILE))) {
+            // Clear the file by writing only the header
+            writer.println("id,name,age,username,password,birthday,userType,isActive,walletBalance");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Check if session exists
+    public Session isSessionExists() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(SESSION_FILE))) {
+            // Skip header
+            reader.readLine();
+            // If there's a second line, session exists
+            String userData = reader.readLine();
+            if (userData != null) {
+                String[] parts = userData.split(",");
+                int id = Integer.parseInt(parts[0]);
+                String name = parts[1];
+                int age = Integer.parseInt(parts[2]);
+                String username = parts[3];
+                String password = parts[4];
+                Date birthday = new Date();
+                UserType userType = UserType.valueOf(parts[6]);
+                boolean isActive = Boolean.parseBoolean(parts[7]);
+                double walletBalance = Double.parseDouble(parts[8]);
+
+                User user;
+                switch (userType) {
+                    case ORGANIZER:
+                        user = new Organizer(id, name, age, username, password, birthday, userType);
+                        break;
+                    case ADMIN:
+                        user = new Admin("Administrator", 40.0f, 1, id, name, age, username, password, birthday, userType, new RoomManager());
+                        break;
+                    case ATTENDEE:
+                        user = new Attendee(id, name, age, username, password, birthday, Gender.MALE, "", walletBalance);
+                        break;
+                    default:
+                        return new Session(false);
+                }
+                user.setActive(isActive);
+                user.getWallet().setBalance(walletBalance);
+                return new Session(user, true);
+            }
+            return new Session(false);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new Session(false);
+        }
+    }
+
 }
+
+

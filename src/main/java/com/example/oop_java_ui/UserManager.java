@@ -29,6 +29,7 @@ public class UserManager {
         users.add(newUser);
         Database db = new Database();
         db.saveUsers(users);
+        db.saveSession(newUser);
         return newUser;
     }
 
@@ -39,6 +40,7 @@ public class UserManager {
         for (User user : users) {
             if (user.getUserName().equals(userName) && user.authenticate(password)) {
                 users .clear();
+                db.saveSession(user);
                 return user;
             }
         }

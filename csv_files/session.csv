@@ -1,0 +1,2 @@
+id,name,age,username,password,birthday,userType,isActive,walletBalance
+1,ahmed,19,ahmed,ahmed,Fri May 09 16:08:28 EEST 2025,ORGANIZER,true,0.00
