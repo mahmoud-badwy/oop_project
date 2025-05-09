@@ -1,2 +1,0 @@
-id,name,age,username,password,birthday,userType,isActive,walletBalance
-1,admin,19,admin,admin,Fri May 02 00:00:00 EEST 2025,ADMIN,true,0.00
