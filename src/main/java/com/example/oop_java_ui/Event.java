@@ -108,7 +108,9 @@ public class Event {
         }
         attendee.getWallet().transfer(ticketPrice,organizer.getWallet());
         attendees.add(attendee);
-        attendee.registerForEvent(this);
+        Database db = new Database();
+        db.updateUser(attendee);
+        db.updateEvent(this);
         return true;
     }
 
@@ -116,7 +118,6 @@ public class Event {
         if (attendees.remove(attendee)) {
             organizer.getWallet().withdraw(0.8 * ticketPrice);
             attendee.getWallet().deposit(0.8 * ticketPrice);
-            attendee.cancelRegisterForEvent(this);
             return true;
         }
         return false;

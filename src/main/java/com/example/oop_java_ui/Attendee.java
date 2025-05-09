@@ -36,6 +36,7 @@ public class Attendee extends User {
             if(event.addAttendee(Attendee.this)) {
                 System.out.println("Registration successful");
                 events.add(event);
+
             }
         }
         void cancelRegisterForEvent(Event event){
