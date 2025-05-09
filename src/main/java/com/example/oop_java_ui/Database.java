@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Database {
-    private final String baseUrl ="C://Users//Acer//Documents//OOP project//oop_project//";
+    private final String baseUrl ="C://Users//mahmo//IdeaProjects//oop_java_ui//";
     private  final String USERS_FILE =baseUrl +  "csv_files//users.csv";
     private  final String ROOMS_FILE =baseUrl + "csv_files//rooms.csv";
     private  final String CATEGORIES_FILE =baseUrl + "csv_files//categories.csv";
@@ -169,7 +169,27 @@ public class Database {
             e.printStackTrace();
         }
     }
-
+    public void saveEvent(Event event) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(EVENTS_FILE, true))) {
+                 int roomId = event.getRoom() != null ? event.getRoom().getId() : -1;
+                int categoryId = event.getCategory() != null ? event.getCategory().getId() : -1;
+                int organizerId = event.getOrganizer() != null ? event.getOrganizer().getId() : -1;
+                
+                writer.println(String.format("%d,%s,%s,%s,%s,%.2f,%d,%d,%d,%d",
+                    event.getEventId(),
+                    event.getEventName(),
+                    event.getEventDescription(),
+                    event.getStartTime(),
+                    event.getEndTime(),
+                    event.getTicketPrice(),
+                    event.getCapacity(),
+                    categoryId,
+                    roomId,
+                    organizerId));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     // Read Events from CSV
     public List<Event> readEvents() {
         List<Event> events = new ArrayList<>();
