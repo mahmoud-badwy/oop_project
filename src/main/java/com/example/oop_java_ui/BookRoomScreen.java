@@ -35,10 +35,21 @@ public class BookRoomScreen {
             try{
                 int eID = Integer.parseInt(eventIdField.getText());
                 Event event = loggedorganizer.getEventById(eID);
+                if (loggedorganizer.bookroom(event,roomManager,admin)){
 
-                loggedorganizer.bookroom(event,roomManager,admin);
+                    feedbackLabel.setText("Room Booked successfully!");
 
-                feedbackLabel.setText("Room Booked successfully!");
+                }
+                else {
+                    feedbackLabel.setText("No rooms available for the given time and capacity.");
+
+                }
+
+
+
+
+
+
 
 
 
