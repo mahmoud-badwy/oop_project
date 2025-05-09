@@ -66,11 +66,10 @@ public class OrganizerDashboard {
         Button deleteEventBtn = new Button("Delete Event");
         Button bookRoomBtn = new Button("Book Room for Event");
         Button viewAttendeesBtn = new Button("View Attendees");
-        Button logoutBtn = new Button("Logout");
         Button settingsBtn = new Button("Settings");
 
         // Style Buttons
-        for (Button btn : new Button[]{createEventBtn, viewEventsBtn, updateEventBtn, deleteEventBtn, bookRoomBtn, viewAttendeesBtn, logoutBtn, settingsBtn}) {
+        for (Button btn : new Button[]{createEventBtn, viewEventsBtn, updateEventBtn, deleteEventBtn, bookRoomBtn, viewAttendeesBtn, settingsBtn}) {
             btn.setPrefWidth(300);
             btn.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;");
         }
