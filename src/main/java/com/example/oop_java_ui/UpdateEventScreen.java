@@ -46,6 +46,8 @@ public class UpdateEventScreen {
         TextField ticketPriceField = new TextField();
         ticketPriceField.setPromptText("Ticket Price");
 
+        Label success = new Label();
+
 
         TextField categoryField = new TextField();
         categoryField.setPromptText("Category");
@@ -74,7 +76,9 @@ public class UpdateEventScreen {
 
 
 
-                feedbackLabel.setText("Event updated successfully!");
+                System.out.println("Event Deleted");
+                success.setText("Event Deleted");
+
             } catch (Exception ex) {
                 feedbackLabel.setText("Error: " + ex.getMessage());
                 feedbackLabel.setStyle("-fx-text-fill: red;");
@@ -90,7 +94,7 @@ public class UpdateEventScreen {
                 startTimeField, endTimeField,
                 ticketPriceField,
                 categoryField,
-                createButton, feedbackLabel
+                createButton, feedbackLabel , success
         );
         form.setAlignment(Pos.CENTER);
         form.setPadding(new Insets(20));
