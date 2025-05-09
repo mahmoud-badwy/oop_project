@@ -13,12 +13,13 @@ public class RoomManager {
         this.nextId = 1;
     }
 
-    // --- Room Management Methods ---
+    
 
+  Database db = new Database();
     public Room createRoom(String name, int capacity) {
         Room room = new Room(nextId++, name, capacity);
         rooms.add(room);
-        Database db = new Database();
+         
         db.saveRooms(rooms);
         return room;
     }
@@ -41,6 +42,7 @@ public class RoomManager {
         if (room != null) {
             room.setName(name);
             room.setCapacity(capacity);
+            db.updateRoom(room);
             return true;
         }
         return false;
@@ -50,6 +52,7 @@ public class RoomManager {
         Room room = getRoomById(id);
         if (room != null) {
             rooms.remove(room);
+            db.deleteRoom(id); 
             return true;
         }
         return false;
@@ -87,3 +90,6 @@ public class RoomManager {
         return results;
     }
 } 
+
+   
+      
