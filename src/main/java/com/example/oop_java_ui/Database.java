@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Database {
-    private final String baseUrl ="C://Users//mahmo//IdeaProjects//oop_java_ui//";
+    private final String baseUrl ="C://Users//gerge//Downloads//New folder//oop_project//";
     private  final String USERS_FILE =baseUrl +  "csv_files//users.csv";
     private  final String ROOMS_FILE =baseUrl + "csv_files//rooms.csv";
     private  final String CATEGORIES_FILE =baseUrl + "csv_files//categories.csv";
@@ -251,12 +251,17 @@ public class Database {
                 if (!attendeeIdsStr.isEmpty()) {
                     String[] attendeeIds = attendeeIdsStr.split(";");
                     for (String attendeeId : attendeeIds) {
-                        int id = Integer.parseInt(attendeeId);
-                        allUsers.stream()
-                                .filter(user -> user.getId() == id && user instanceof Attendee)
-                                .map(user -> (Attendee) user)
-                                .findFirst()
-                                .ifPresent(event::addAttendee);
+                        try {
+                            int id = Integer.parseInt(attendeeId);
+                            for (User user : allUsers) {
+                                if (user.getId() == id && user instanceof Attendee) {
+                                    event.addAttendeewithoutRigester((Attendee) user);
+                                    break;
+                                }
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid attendee ID format: " + attendeeId);
+                        }
                     }
                 }
 

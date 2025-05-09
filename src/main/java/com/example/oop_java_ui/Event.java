@@ -120,6 +120,11 @@ public class Event {
         return true;
     }
 
+    public boolean addAttendeewithoutRigester(Attendee attendee) {
+        attendees.add(attendee);
+        return true;
+    }
+
     public boolean cancelRegistration(Attendee attendee) {
         if (attendees.remove(attendee)) {
             organizer.getWallet().withdraw(0.8 * ticketPrice);
