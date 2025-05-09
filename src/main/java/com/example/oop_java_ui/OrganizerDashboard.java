@@ -82,7 +82,7 @@ public class OrganizerDashboard {
         deleteEventBtn.setOnAction(e -> showDeleteEventForm());
         bookRoomBtn.setOnAction(e -> showBookRoomForm());
         viewAttendeesBtn.setOnAction(e -> showAttendeeListForm());
-        logoutBtn.setOnAction(e -> logout());
+
         settingsBtn.setOnAction(e -> showSettings());
 
         mainContainer.getChildren().addAll(
@@ -97,8 +97,7 @@ public class OrganizerDashboard {
                 roomWrapper,
                 bookRoomBtn,
                 accWrapper,
-                settingsBtn,
-                logoutBtn
+                settingsBtn
         );
 
         Scene scene = new Scene(mainContainer,  700, 600);
@@ -183,12 +182,7 @@ public class OrganizerDashboard {
 
     }
 
-    private void logout() {
-        System.out.println("Logging out...");
-        organizer.setActive(false);
-        stage.close();
 
-    }
 
     private void showSettings() {
         Stage settingsStage = new Stage();
