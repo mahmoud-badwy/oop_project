@@ -17,6 +17,7 @@ public class Room {
         this.id = id;
         this.name = name;
         this.capacity = capacity;
+        this.availableSlots = new TimeSlot(LocalTime.of(9, 0), LocalTime.of(17, 0));
     }
 
     // Getters and Setters

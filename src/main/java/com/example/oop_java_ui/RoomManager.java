@@ -63,7 +63,8 @@ public class RoomManager {
     }
 
     public List<Room> getAvailableRooms(LocalTime startTime, LocalTime endTime, int capacity) {
-        List<Room> availableRooms = new ArrayList<>();
+        Database db = new Database();
+        List<Room> availableRooms = db.readRooms();
         Room.TimeSlot targetSlot = new Room.TimeSlot(startTime, endTime);
 
         for (Room room : rooms) {
