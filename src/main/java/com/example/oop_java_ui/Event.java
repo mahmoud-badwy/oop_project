@@ -126,10 +126,26 @@ public class Event {
     }
 
     public boolean cancelRegistration(Attendee attendee) {
-        if (attendees.remove(attendee)) {
-            organizer.getWallet().withdraw(0.8 * ticketPrice);
-            attendee.getWallet().deposit(0.8 * ticketPrice);
-            return true;
+
+        for(Attendee att: attendees) {
+            if(att.getId() == attendee.getId()) {
+                attendee.getWallet().deposit(0.8 * ticketPrice);
+                attendees.remove(att);
+                UserManager userManager = new UserManager();
+                User user = userManager.getUserById(this.getOrganizer().getId());
+                Organizer org = (Organizer) user;
+                System.out.println(org.getWallet().getBalance());
+                org.getWallet().withdraw(0.8 * ticketPrice);
+                System.out.println(org.getWallet().getBalance());
+
+                attendees.remove(attendee);
+                Database db = new Database();
+                db.updateUser(attendee);
+                db.updateUser(org);
+                db.updateEvent(this);
+
+                return true;
+            }
         }
         return false;
     }

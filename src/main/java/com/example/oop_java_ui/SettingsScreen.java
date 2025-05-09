@@ -134,20 +134,13 @@ public class SettingsScreen {
         VBox panel = new VBox(15);
         panel.setPadding(new Insets(20));
         panel.setAlignment(Pos.CENTER);
-        
-        Label statusLabel = new Label("Account Status: " + (currentUser.isActive() ? "Active" : "Deactivated"));
-        statusLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
-        
-        Button toggleButton = new Button(currentUser.isActive() ? "Deactivate Account" : "Reactivate Account");
-        toggleButton.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;");
-        toggleButton.setOnAction(e -> toggleAccountStatus(toggleButton, statusLabel));
 
         // Add Logout Button
         Button logoutButton = new Button("Logout");
         logoutButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold;");
-        logoutButton.setOnAction(e -> handleLogout());
+        logoutButton.setOnAction(e -> handleLogout(stage));
         
-        panel.getChildren().addAll(statusLabel, toggleButton, logoutButton);
+        panel.getChildren().addAll(logoutButton);
         return panel;
     }
 
@@ -193,27 +186,7 @@ public class SettingsScreen {
         }
     }
 
-    private void toggleAccountStatus(Button button, Label statusLabel) {
-        boolean success;
-        if (currentUser.isActive()) {
-            success = userManager.deactivateAccount(currentUser.getId());
-        } else {
-            success = userManager.reactivateAccount(currentUser.getId());
-        }
-
-        if (success) {
-            currentUser = userManager.getUserById(currentUser.getId());
-            statusLabel.setText("Account Status: " + (currentUser.isActive() ? "Active" : "Deactivated"));
-            button.setText(currentUser.isActive() ? "Deactivate Account" : "Reactivate Account");
-            showAlert("Success", 
-                currentUser.isActive() ? "Account reactivated successfully!" : "Account deactivated successfully!",
-                Alert.AlertType.INFORMATION);
-        } else {
-            showAlert("Error", "Failed to update account status.", Alert.AlertType.ERROR);
-        }
-    }
-
-    private void handleLogout() {
+    private void handleLogout(Stage oldStage) {
         // Delete the session
         Database db = new Database();
         db.deleteSession();
@@ -226,6 +199,7 @@ public class SettingsScreen {
         alert.showAndWait();
         
         // Close the settings window
+        oldStage.close();
         stage.close();
         
         // Show login screen
