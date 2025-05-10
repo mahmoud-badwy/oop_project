@@ -531,29 +531,6 @@ public class AdminDashboard {
 
         // Add operation area to the main layout after the sections container
         mainLayout.getChildren().add(operationArea);
-
-        // Bottom buttons
-        HBox bottomButtons = new HBox();
-        bottomButtons.setPadding(new Insets(10));
-        bottomButtons.setSpacing(20);
-        bottomButtons.setAlignment(Pos.CENTER_RIGHT); // Align buttons to the right
-        
-        Button refreshBtn = new Button("Refresh");
-        Button logoutBtn = new Button("Logout");
-        
-        refreshBtn.setStyle(buttonStyle);
-        logoutBtn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-padding: 8 15;");
-        
-        refreshBtn.setOnAction(e -> {
-            viewAllRooms();
-            viewAllEvents();
-        });
-        logoutBtn.setOnAction(e -> Platform.exit());
-        
-        // Add logout button first to push it to the right
-        bottomButtons.getChildren().addAll(refreshBtn, logoutBtn);
-        mainLayout.getChildren().add(bottomButtons);
-
         Scene scene = new Scene(mainLayout, 1000, 800);
         stage.setScene(scene);
     }

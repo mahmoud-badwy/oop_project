@@ -7,6 +7,8 @@ import java.util.Date;
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
+        //todo:view all events
+        //todo:search by id
         UserManager userManager = new UserManager();
         Database db = new Database();
         
