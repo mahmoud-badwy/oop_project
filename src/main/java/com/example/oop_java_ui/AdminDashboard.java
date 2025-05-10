@@ -374,6 +374,14 @@ public class AdminDashboard {
             String searchTerm = searchRoomField.getText();
             try {
                 int id = Integer.parseInt(searchTerm);
+
+            }
+            catch (NumberFormatException ex) {
+                displayArea.setText("Please enter a valid room ID.");
+                return;
+            }
+            try {
+                int id = Integer.parseInt(searchTerm);
                 Room room = admin.roomManager.getRoomById(id);
                 if (room != null) {
                     displayArea.setText("Room found:\n" +
