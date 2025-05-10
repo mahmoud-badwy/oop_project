@@ -206,9 +206,7 @@ public class AdminDashboard {
         createRoomTitle.setFont(Font.font(14));
         createRoomTitle.setStyle("-fx-font-weight: bold;");
         
-        TextField roomIdField = new TextField();
-        roomIdField.setPromptText("Room ID");
-        roomIdField.setPrefWidth(300);
+
         
         TextField roomNameField = new TextField();
         roomNameField.setPromptText("Room Name");
@@ -222,14 +220,17 @@ public class AdminDashboard {
         createRoomSubmitBtn.setStyle(buttonStyle);
         createRoomSubmitBtn.setOnAction(e -> {
             try {
-                int id = Integer.parseInt(roomIdField.getText());
                 String name = roomNameField.getText();
                 int capacity = Integer.parseInt(roomCapacityField.getText());
                 
-                admin.roomManager.createRoom(name, id);
+                if(admin.roomManager.createRoom(name, capacity)){
+                    displayArea.setText("Room created successfully!");
+
+                }else{
+                    displayArea.setText("Room already exists!");
+                }
                 
-                displayArea.setText("Room created successfully!");
-                roomIdField.clear();
+
                 roomNameField.clear();
                 roomCapacityField.clear();
                 operationArea.setVisible(false);
@@ -242,7 +243,7 @@ public class AdminDashboard {
         cancelCreateBtn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-padding: 8 15;");
         cancelCreateBtn.setOnAction(e -> {
             operationArea.setVisible(false);
-            roomIdField.clear();
+
             roomNameField.clear();
             roomCapacityField.clear();
         });
@@ -250,7 +251,7 @@ public class AdminDashboard {
         HBox createButtons = new HBox(10);
         createButtons.getChildren().addAll(createRoomSubmitBtn, cancelCreateBtn);
         
-        createRoomSection.getChildren().addAll(createRoomTitle, roomIdField, roomNameField, roomCapacityField, createButtons);
+        createRoomSection.getChildren().addAll(createRoomTitle, roomNameField, roomCapacityField, createButtons);
 
         // Update Room Section
         updateRoomSection.setPadding(new Insets(10));
@@ -327,9 +328,13 @@ public class AdminDashboard {
         deleteRoomSubmitBtn.setOnAction(e -> {
             try {
                 int id = Integer.parseInt(deleteRoomIdField.getText());
-                admin.roomManager.deleteRoom(id);
-                
-                displayArea.setText("Room deleted successfully!");
+              if(  admin.roomManager.deleteRoom(id)){
+                  displayArea.setText("Room deleted successfully!");
+              }else{
+                  displayArea.setText("Room could not be deleted!");
+              }
+
+
                 deleteRoomIdField.clear();
                 operationArea.setVisible(false);
             } catch (NumberFormatException ex) {
