@@ -7,15 +7,18 @@ import java.util.Date;
 public class UserManager {
     private List<User> users;
     private int nextId;
-
+    Database db = new Database();
     public UserManager() {
         this.users = new ArrayList<>();
-        this.nextId = 1;
+        users = db.readUsers();
+        this.nextId = users.size()+ 1;
+        users.clear();
+
     }
 
     // Register a new user
     public User registerUser(String name, int age, String userName, String password, Date birthday, UserType userType) {
-        Database db = new Database();
+
         readAllUsers();
         // Check if username already exists
         if (isUsernameTaken(userName)) {
