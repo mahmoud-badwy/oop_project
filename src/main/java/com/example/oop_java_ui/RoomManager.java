@@ -7,21 +7,28 @@ import java.util.List;
 public class RoomManager {
     private List<Room> rooms;
     private int nextId;
-
+    Database db = new Database();
     public RoomManager() {
         this.rooms = new ArrayList<>();
-        this.nextId = 1;
+
+        this.rooms = db.readRooms();
+        this.nextId = rooms.size() + 1;
     }
 
     
 
-  Database db = new Database();
-    public Room createRoom(String name, int capacity) {
-        Room room = new Room(nextId++, name, capacity);
-        rooms.add(room);
-         
-        db.saveRooms(rooms);
-        return room;
+
+    public boolean createRoom(String name, int capacity) {
+        try{
+            rooms = db.readRooms();
+            Room room = new Room(nextId++, name, capacity);
+            rooms.add(room);
+            db.saveRooms(rooms);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public List<Room> getAllRooms() {
@@ -29,15 +36,20 @@ public class RoomManager {
     }
 
     public Room getRoomById(int id) {
+        rooms = db.readRooms();
+
         for (Room room : rooms) {
             if (room.getId() == id) {
                 return room;
             }
         }
+        rooms.clear();
         return null;
     }
 
     public boolean updateRoom(int id, String name, int capacity) {
+        rooms=  db.readRooms();
+
         Room room = getRoomById(id);
         if (room != null) {
             room.setName(name);
@@ -45,16 +57,19 @@ public class RoomManager {
             db.updateRoom(room);
             return true;
         }
+        rooms.clear();
         return false;
     }
 
     public boolean deleteRoom(int id) {
+        rooms=  db.readRooms();
         Room room = getRoomById(id);
         if (room != null) {
             rooms.remove(room);
-            db.deleteRoom(id); 
+            db.deleteRoom(id);
             return true;
         }
+        System.out.println("room not found");
         return false;
     }
     public void occupyroom(Room room){
@@ -77,12 +92,14 @@ public class RoomManager {
     }
 
     public List<Room> searchRoomsByName(String name) {
+        rooms = db.readRooms();
         List<Room> results = new ArrayList<>();
         for (Room room : rooms) {
             if (room.getName().toLowerCase().contains(name.toLowerCase())) {
                 results.add(room);
             }
         }
+        rooms.clear();
         return results;
     }
 } 

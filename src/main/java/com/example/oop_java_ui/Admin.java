@@ -51,7 +51,7 @@ public class Admin extends User {
   public void Createroom(String name, int capacity){System.out.println(roomManager.createRoom(name,capacity));}
   public void getroombyID(int id){System.out.println(roomManager.getRoomById(id));}
   public void updateRoom(int id, String name, int capacity) {System.out.println(roomManager.updateRoom(id, name, capacity));}
-  public void deleteRoom(int id){System.out.println(roomManager.deleteRoom(id));}
+  public void deleteRoom(int id){System.out.println(roomManager.deleteRoom(id));db.deleteRoom(id);}
   public void searchRoomsByName(String name){System.out.println(roomManager.searchRoomsByName(name));}
   
    
