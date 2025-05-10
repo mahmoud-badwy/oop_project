@@ -21,9 +21,12 @@ public class Organizer extends User {
     }
 
 public void createEvent(Event event) {
+
+
     events.add(event);
     Database db = new Database();
-    db.saveEvents(events);
+    db.saveEvent(events.get(0));
+    events.clear();
 
 
 

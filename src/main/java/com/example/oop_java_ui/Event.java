@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Event {
+    public static int idcounter=1;
     private int eventId;
     private String eventName;
     private String eventDescription;
@@ -25,6 +26,20 @@ public class Event {
         this.room = room;
     }
 
+    public Event(String eventName, String eventDescription, LocalTime startTime, LocalTime endTime, double ticketPrice, int capacity, Category category, Organizer organizer) {
+        this.eventId = idcounter++;
+        this.eventName = eventName;
+        this.eventDescription = eventDescription;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.ticketPrice = ticketPrice;
+        this.capacity = capacity;
+        this.category = category;
+        this.room = null;
+        this.organizer = organizer;
+        this.attendees = new ArrayList<>();
+        this.noofattendees = attendees.size();
+    }
     public Event(int eventId, String eventName, String eventDescription, LocalTime startTime, LocalTime endTime, double ticketPrice, int capacity, Category category, Organizer organizer) {
         this.eventId = eventId;
         this.eventName = eventName;
