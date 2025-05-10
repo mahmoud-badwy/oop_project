@@ -150,9 +150,9 @@ public class AttendeeDashboard {
                         System.out.println(currentAttendee.getWallet().getBalance());
                         balanceLabel.setText("Wallet Balance: $"+ currentAttendee.getWallet().getBalance());
                         
-                        // Update user in database
+//                         Update user in database
                         database.updateUser(currentAttendee);
-                        
+//
                         showAlert("Success", "Balance updated successfully!", Alert.AlertType.INFORMATION);
                     } catch (NumberFormatException ex) {
                         errorLabel.setText("Please enter a valid number");
