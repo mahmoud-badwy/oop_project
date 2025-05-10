@@ -50,7 +50,7 @@ public class EventCreationDashboard {
 
         createButton.setOnAction(e -> {
             try {
-                int eventId = Integer.parseInt(eventIdField.getText());
+                int eventId = Integer.parseInt(eventIdField.getText());;
                 String name = nameField.getText();
                 String desc = descriptionField.getText();
                 LocalTime start = LocalTime.parse(startTimeField.getText());
@@ -62,7 +62,7 @@ public class EventCreationDashboard {
                 List<Category> holder = catmanager.searchCategoriesByName(catName);
                 Category category = holder.get(0);
 
-                Event event = new Event(eventId, name, desc, start, end, price, cap, category, organizer);
+                Event event = new Event(eventId,name, desc, start, end, price, cap, category, organizer);
                 organizer.createEvent(event);
 
                 feedbackLabel.setText("Event created successfully!");
@@ -74,7 +74,8 @@ public class EventCreationDashboard {
 
         VBox form = new VBox(10,
                 titleLabel,
-                eventIdField, nameField, descriptionField,
+                eventIdField,
+                nameField, descriptionField,
                 startTimeField, endTimeField,
                 ticketPriceField, capacityField,
                 categoryField,
