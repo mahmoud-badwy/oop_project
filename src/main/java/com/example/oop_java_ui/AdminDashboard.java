@@ -425,20 +425,31 @@ public class AdminDashboard {
         
         viewAllEventsBtn.setOnAction(e -> {
             displayArea.clear();
-            List<Event> events = admin.getAllEvents();
-            if (events != null && !events.isEmpty()) {
+            Database db = new Database();
+
+            List<Event> events =  db.readEvents();
+            if (events == null || events.isEmpty()) {
+                displayArea.setText("No events available.");
+            } else {
                 StringBuilder eventText = new StringBuilder();
                 eventText.append("Available Events:\n\n");
+
                 for (Event event : events) {
                     eventText.append("Event ID: ").append(event.getEventId()).append("\n");
                     eventText.append("Name: ").append(event.getEventName()).append("\n");
                     eventText.append("Date: ").append(event.getStartTime()).append("\n");
-                    eventText.append("Room: ").append(event.getRoom().getName()).append("\n");
+
+                    if (event.getRoom() != null) {
+                        eventText.append("Room: ").append(event.getRoom().getName()).append("\n");
+                    } else {
+                        eventText.append("Room: N/A\n");
+                    }
+
                     eventText.append("----------------------------------------\n");
                 }
+
                 displayArea.setText(eventText.toString());
-            } else {
-                displayArea.setText("No events available.");
+
             }
         });
         
