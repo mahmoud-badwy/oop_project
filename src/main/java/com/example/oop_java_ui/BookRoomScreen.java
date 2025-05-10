@@ -31,6 +31,9 @@ public class BookRoomScreen {
 
 
         Label feedbackLabel = new Label();
+        feedbackLabel.setStyle("-fx-font-weight: bold;");
+        feedbackLabel.setText("");
+
 
         Button book = new Button("Book Room");
 
@@ -42,10 +45,11 @@ public class BookRoomScreen {
                 List<User> users =db.readUsers();
                 List<User> admins = new ArrayList<>();
                 for (User user : users) {
-                    if (user instanceof Admin) {
+                    if (user.getUserType() == UserType.ADMIN) {
                         admins.add(user);
                     }
                 }
+                System.out.println(admins);
                 User admin = admins.get(0);
 
 

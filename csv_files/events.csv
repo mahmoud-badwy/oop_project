@@ -1,5 +1,2 @@
 eventId,eventName,eventDescription,startTime,endTime,ticketPrice,capacity,categoryId,roomId,organizerId,attendeeIds
-0,12g,dfg,04:04,01:04,12.00,12,2,-1,2,
-0,fsd,dsf,02:03,04:05,12.00,12,2,-1,2,
-0,asasa,asasas,00:04,09:09,12.00,12,2,-1,2,
-1,dsfsd,dsfs,01:01,09:09,12.00,12,2,-1,2,
+1,event,event,10:07,20:20,25.00,1,2,1,1,

@@ -90,31 +90,26 @@ public void createEvent(Event event) {
 
     public boolean bookroom(Event event, RoomManager roommanager, User admin) {
         Database db = new Database();
-        List<Room> roomcheck = roommanager.getAvailableRooms(event.getCapacity());
-        long hours = Duration.between(event.getStartTime(), event.getEndTime()).toHours();
-        long price = hours * 10;
+        System.out.println("check rooms");
 
-        if (!roomcheck.isEmpty()) {
-            Room selectedRoom = roomcheck.get(0);
-            roommanager.occupyroom(selectedRoom);
-
-            // Transfer money
-            Organizer.super.getWallet().transfer(price, admin.getWallet());
-
-            // Set room to event
-            event.setRoom(selectedRoom);
-
-            // Save changes
-            db.updateEvent(event);
-            db.updateRoom(selectedRoom);
-            db.updateUser(admin);
-            db.updateUser(this);
-
-            return true;
-        } else {
-            System.out.println("No rooms available for the given time and capacity.");
-            return false;
+        List<Room> roomcheck = db.readRooms();
+        for (Room r : roomcheck) {
+            if (event.getRoom() == null ) {
+                event.setRoom(r);
+                // Save changes
+                db.updateEvent(event);
+                return  true;
+            }
+            else if (r.getCapacity() >= event.getRoom().getCapacity()) {
+                event.setRoom(r);
+                // Save changes
+                db.updateEvent(event);
+                return  true;
+            }
         }
+        System.out.println("No rooms available for the given time and capacity.");
+
+     return false;
     }
 
     RoomManager m = new RoomManager ();
