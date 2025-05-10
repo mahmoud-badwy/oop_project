@@ -15,6 +15,8 @@ public class UserManager {
 
     // Register a new user
     public User registerUser(String name, int age, String userName, String password, Date birthday, UserType userType) {
+        Database db = new Database();
+        readAllUsers();
         // Check if username already exists
         if (isUsernameTaken(userName)) {
             return null;
@@ -27,9 +29,9 @@ public class UserManager {
             }
         };
         users.add(newUser);
-        Database db = new Database();
         db.saveUsers(users);
         db.saveSession(newUser);
+        users.clear();
         return newUser;
     }
 
@@ -44,7 +46,7 @@ public class UserManager {
                 return user;
             }
         }
-        users .clear();
+        users.clear();
 
         return null;
     }

@@ -89,6 +89,7 @@ public class LoginScreen {
     }
 
     private void handleLogin() {
+
         String username = usernameField.getText();
         String password = passwordField.getText();
 
@@ -122,6 +123,7 @@ public class LoginScreen {
         } else {
             messageLabel.setText("Invalid username or password");
         }
+
     }
 
     private void showRegistrationScreen() {
