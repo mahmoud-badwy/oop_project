@@ -1,5 +1,4 @@
 id,name,age,username,password,birthday,userType,isActive,walletBalance
-1,nj,19,nj,mahmoud,2025-05-02,ATTENDEE,true,0.00
-1,nk,19,nk,mahmoud,2025-05-10,ATTENDEE,true,0.00
-1,dk,19,dk,mahmoud,2025-05-10,ATTENDEE,true,0.00
-1,hu,19,mahmoud,mahmoud,2025-05-10,ADMIN,true,0.00
+1,mahmoud,19,mahmoud,mahmoud,2025-05-02,ATTENDEE,true,0.00
+2,mahmoud2,19,mahmoud2,mahmoud2,2025-05-10,ORGANIZER,true,0.00
+1,mahmoud3,19,mahmoud3,mahmoud3,2025-05-10,ADMIN,true,0.00
