@@ -128,7 +128,6 @@ public class AdminDashboard {
         Button createRoomBtn = new Button("Create Room");
         Button updateRoomBtn = new Button("Update Room");
         Button deleteRoomBtn = new Button("Delete Room");
-        Button searchByNameBtn = new Button("Search by Name");
         Button searchByIdBtn = new Button("Search by ID");
         
         String buttonStyle = "-fx-background-color: #3498db; -fx-text-fill: white; -fx-padding: 8 15; -fx-min-width: 150;";
@@ -136,7 +135,6 @@ public class AdminDashboard {
         createRoomBtn.setStyle(buttonStyle);
         updateRoomBtn.setStyle(buttonStyle);
         deleteRoomBtn.setStyle(buttonStyle);
-        searchByNameBtn.setStyle(buttonStyle);
         searchByIdBtn.setStyle(buttonStyle);
         
         viewRoomsBtn.setOnAction(e -> {
@@ -179,12 +177,7 @@ public class AdminDashboard {
             deleteRoomSection.setVisible(true);
         });
         
-        searchByNameBtn.setOnAction(e -> {
-            operationArea.getChildren().clear();
-            operationArea.getChildren().add(searchRoomSection);
-            operationArea.setVisible(true);
-            searchRoomSection.setVisible(true);
-        });
+
         
         searchByIdBtn.setOnAction(e -> {
             operationArea.getChildren().clear();
@@ -193,7 +186,7 @@ public class AdminDashboard {
             searchRoomSection.setVisible(true);
         });
         
-        roomButtons.getChildren().addAll(viewRoomsBtn, createRoomBtn, updateRoomBtn, deleteRoomBtn, searchByNameBtn, searchByIdBtn);
+        roomButtons.getChildren().addAll(viewRoomsBtn, createRoomBtn, updateRoomBtn, deleteRoomBtn, searchByIdBtn);
         roomSection.getChildren().add(roomButtons);
 
         // Create Room Section
@@ -365,7 +358,7 @@ public class AdminDashboard {
         searchRoomTitle.setStyle("-fx-font-weight: bold;");
         
         TextField searchRoomField = new TextField();
-        searchRoomField.setPromptText("Enter Room ID or Name");
+        searchRoomField.setPromptText("Enter Room ID");
         searchRoomField.setPrefWidth(300);
         
         Button searchRoomSubmitBtn = new Button("Search");
